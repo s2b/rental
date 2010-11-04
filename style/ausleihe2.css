@@ -80,6 +80,26 @@ table.listing tr.noline td {
 	border-bottom: 0;
 }
 
+table.calendar {
+	width: 100%;
+	border: 1px #000 solid;
+}
+
+table.calendar th {
+	border-top: 1px #000 solid;
+}
+
+table.calendar td {
+	border: #000 solid;
+	border-width: 1px 1px 0 0;
+	padding: 10px 5px;
+	width: 14%;
+}
+
+table.calendar td:empty, table.calendar tr td:nth-child(6), table.calendar tr td:nth-child(7) {
+	background-color: #DEDEDE;
+}
+
 div.message {
 	margin: 2em 0;
 	padding: 0.8em;

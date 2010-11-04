@@ -17,7 +17,7 @@
 
 		<?php if ($this->session->logged_in) : ?>
 
-		<h2>Simon Praetorius <?php echo anchor('/home/logout', 'abmelden') ?></h2>
+		<h2><?php echo $this->session->userdata('user_name') . ' ' . anchor('/home/logout', 'abmelden') ?></h2>
 		<ul>
 			<?php foreach ($this->menu_model->user_menu() as $url => $info) : ?>
 			<li<?php echo ($this->uri->uri_part($info[1]) == $url) ? ' class="active"' : '' ?>>

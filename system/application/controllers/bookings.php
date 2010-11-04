@@ -39,7 +39,7 @@ class Bookings extends Controller
 			BOOKING_BORROWED => 'ausleihen',
 			BOOKING_CLOSED => 'abschließen',
 			BOOKING_DENIED => 'ablehnen',
-			'' => '',
+			'' => '------',
 			BOOKING_DELETE => 'löschen');
 
 		// Daten fürs View
@@ -82,19 +82,34 @@ class Bookings extends Controller
 
 	function calendar()
 	{
-		if (!$this->ajax) {
+		if (!$this->ajax)
+		{
 			exit;
 		}
 
+		$date = $this->input->post('date');
+		$date = strtotime($date);
+
+		$year = ($this->uri->segment(3)) ? $this->uri->segment(3) : date('Y', $date);
+		$month = ($this->uri->segment(4)) ? $this->uri->segment(4) : date('m', $date);
+
+		$markers = array();
+		if (date('m', $date) == $month)
+		{
+			$markers[date('d', $date)] = '';
+		}
+
 		$prefs = array(
+			'start_day' => 'monday',
 			'show_next_prev'  => TRUE,
-			'next_prev_url'   => 'bookings/calendar'
+			'next_prev_url'   => base_url() . 'bookings/calendar',
+			'template' => $this->load->view('bookings/calendar_template', '', true)
 		);
 
 		$this->load->library('calendar', $prefs);
 
 		$content = $this->load->view('bookings/calendar', array(
-			'calendar' => $this->calendar->generate($this->uri->segment(3), $this->uri->segment(4))
+			'calendar' => $this->calendar->generate($year, $month, $markers)
 		), true);
 
 		echo json_encode(array('status' => 1, 'content' => $content));

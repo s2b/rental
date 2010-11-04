@@ -58,6 +58,31 @@ function prepareModal(isForm) {
 			}
 		});
 	}
+
+/*
+	el = elModal.find('table.calendar');
+	if (el.length > 0) {
+		el.find('th.left a').click(function() {
+			$('#black').remove();
+			$.post(base_url + this.href, 'ajax=true', function (data) {
+				if (data.status == 1) {
+					openModal(data.content);
+				}
+			}, 'json');
+			return false;
+		});
+
+		el.find('th.left a').click(function() {
+			$('#black').remove();
+			$.post(base_url + this.href, 'ajax=true', function (data) {
+				if (data.status == 1) {
+					openModal(data.content);
+				}
+			}, 'json');
+			return false;
+		});
+	}
+*/
 }
 
 /*
@@ -97,7 +122,7 @@ function prepareDates() {
 	if (el.length > 0) {
 		var el2 = document.createElement('a');
 		$(el2).attr('href', '.').click(function () {
-			$.post(base_url + 'bookings/calendar/', 'ajax=true', function (data) {
+			$.post(base_url + 'bookings/calendar/', $.param({'date': $(this).find('span').text()}) + '&ajax=true', function (data) {
 				if (data.status == 1) {
 					openModal(data.content);
 				}
