@@ -2,13 +2,16 @@
 
 html {
 	height: 100%;
+	background-color: #FFF;
 }
 
 body {
+	height: 100%;
+	margin-left: 220px;
+	border-left: 1px solid #D0D0D0;
 	background-color: #EEE;
 	color: #4F5155;
 	font-family: 'Lucida Grande', 'Lucida Sans', sans-serif;
-	height: 100%;
 }
 
 h1 {
@@ -121,23 +124,24 @@ div.calendar_top a {
 	height: 32px;
 	width: 32px;
 	background-repeat: no-repeat;
+	background-image: url(images/prev_next.png);
 }
 
 div.calendar_top .prev a {
-	background-image: url(images/prev.png);
+	background-position: 0 0;
 }
 
 div.calendar_top .prev a:hover {
-	background-image: url(images/prev_down.png);
+	background-position: 0 -32px;
 }
 
 div.calendar_top .next a {
-	background-image: url(images/next.png);
+	background-position: -32px 0;
 	float: right;
 }
 
 div.calendar_top .next a:hover {
-	background-image: url(images/next_down.png);
+	background-position: -32px -32px;
 }
 
 div.calendar_top .month {
@@ -198,19 +202,12 @@ div.errors p, div.message p {
 /*
  * Seitenstruktur
  */
-#navigation-bar, #navigation {
+#navigation {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	width: 220px;
-	border-right: 1px solid #D0D0D0;
-	background-color: #FFF;
-	-moz-box-shadow: 2px 0px 5px #CCC;
-}
-
-#navigation-bar {
-	position: fixed;
 }
 
 #navigation #logo {
@@ -240,6 +237,7 @@ div.errors p, div.message p {
 }
 
 #navigation li {
+	list-style-type: none;
 	margin: 0;
 }
 
@@ -261,7 +259,6 @@ div.errors p, div.message p {
 }
 
 #content {
-	margin-left: 220px;
 	padding: 1em 1.5em 1.5em;
 }
 
