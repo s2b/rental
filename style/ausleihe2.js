@@ -144,7 +144,7 @@ function prepareCalendar() {
 	if ($el.length > 0) {
 		$el.replaceWith(function () {
 			$t = $(this);
-			return $('<a href="." data-id="' + $t.attr('data-id') + '">' + $t.text() + '</a>').click(function () {
+			return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '">' + $t.text() + '</a>').click(function () {
 				var className = 'booking-record-' + $(this).attr('data-id');
 				var $records = $('*[class*="booking-record-"]');
 				var $record;

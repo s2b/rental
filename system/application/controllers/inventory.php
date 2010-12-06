@@ -21,7 +21,7 @@ class Inventory extends Controller
 	function index()
 	{
 		$this->load->view('header');
-
+		$this->load->view('inventory/listing');
 		$this->load->view('footer');
 	}
 }
