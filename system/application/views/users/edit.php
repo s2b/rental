@@ -14,7 +14,7 @@
 			<dt><label for="email">E-Mailadresse:</label></dt>
 			<dd>
 				<?php echo form_error('email') ?>
-				<input type="text" name="email" id="email" value="<?php echo set_value('email', $user->email) ?>" />
+				<input type="email" name="email" id="email" value="<?php echo set_value('email', $user->email) ?>" />
 			</dd>
 		</dl>
 		<dl>

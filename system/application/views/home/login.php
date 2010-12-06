@@ -6,7 +6,7 @@
 
 			<dl>
 				<dt><label for="email">E-Mail:</label></dt>
-				<dd><input type="text" name="email" id="email" value="<?php echo set_value('email') ?>" /></dd>
+				<dd><input type="email" name="email" id="email" value="<?php echo set_value('email') ?>" /></dd>
 			</dl>
 			<dl>
 				<dt><label for="password">Passwort:</label></dt>
