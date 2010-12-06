@@ -1,6 +1,6 @@
 <?php
 
-class MY_Calendar
+class Calendar2
 {
 	var $view = 'calendar';
 	var $first_weekday = 1;
@@ -38,7 +38,7 @@ class MY_Calendar
 		12 => array('cal_dec', 'cal_december')
 	);
 
-	function MY_Calendar($config = array())
+	function Calendar2($config = array())
 	{
 		$this->CI =& get_instance();
 		$this->CI->load->helper('date');

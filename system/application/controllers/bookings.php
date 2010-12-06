@@ -121,19 +121,19 @@ class Bookings extends Controller
 			'next_prev_url' => base_url() . "bookings/$page"
 		);
 
-		$this->load->library('calendar', $prefs);
+		$this->load->library('calendar2', $prefs);
 
-		$this->calendar->select_month($month, $year);
+		$this->calendar2->select_month($month, $year);
 
 		foreach ($bookings as $booking)
 		{
 			if ($booking->status == BOOKING_CONFIRMED || $booking->status == BOOKING_BORROWED)
 			{
-				$this->calendar->add_date_timestamp(strtotime($booking->start), strtotime($booking->end), $booking->desc, array('id' => $booking->id));
+				$this->calendar2->add_date_timestamp(strtotime($booking->start), strtotime($booking->end), $booking->desc, array('id' => $booking->id));
 			}
 		}
 
-		return $this->calendar->generate();
+		return $this->calendar2->generate();
 	}
 
 	/**
