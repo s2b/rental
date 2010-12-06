@@ -182,9 +182,12 @@ div.message {
 	text-align: center;
 }
 
-div.errors {
+div.errors, div.error {
 	font-size: 85%;
 	color: #D60101;
+}
+
+div.errors {
 	margin-bottom: 1em;
 }
 

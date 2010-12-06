@@ -94,6 +94,34 @@ function prepareListing() {
 
 		el.hide().siblings('span').wrap(el2);
 	}
+
+	$('.edit-link').click(function () {
+		$t = $(this);
+
+		$.post($t.attr('href'), 'ajax=true', function (data) {
+			if (typeof data != undefined && data.status != 0 && data.content) {
+				$t.text(data.content);
+			} else {
+				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
+			}
+		}, 'json');
+
+		return false;
+	});
+
+	$('.modal-link').click(function () {
+		$t = $(this);
+
+		$.post($t.attr('href'), 'ajax=true', function (data) {
+			if (typeof data != undefined && data.status != 0 && data.content) {
+				openModal(data.content, true);
+			} else {
+				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
+			}
+		}, 'json');
+
+		return false;
+	});
 }
 
 /*
