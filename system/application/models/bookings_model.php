@@ -85,7 +85,7 @@ class Bookings_model extends MY_Model
 			$updates[(int) $id] = array();
 		}
 
-		$sql = 'SELECT bu.booking_id, bu.booking_status, bu.update_desc, bu.user_id,
+		$sql = 'SELECT bu.booking_id, bu.booking_status, bu.update_time, bu.update_desc, bu.user_id,
 				u_bu.user_name, u_bu.user_email, u_bu.semester_id
 			FROM bookings_updates bu
 			INNER JOIN users u_bu
@@ -98,13 +98,15 @@ class Bookings_model extends MY_Model
 		{
 			$update = new stdClass();
 			$update->status = $data->booking_status;
+			$update->status_text = $this->status_text[$data->booking_status];
+			$update->time = $data->update_time;
 			$update->desc = $data->update_desc;
 
 			$update->user = new stdClass();
 			$update->user->id = $data->user_id;
 			$update->user->name = $data->user_name;
 			$update->user->email = $data->user_email;
-			$udpate->user->semester_id = $data->semester_id;
+			$update->user->semester_id = $data->semester_id;
 
 			$updates[$data->booking_id][] = $update;
 		}

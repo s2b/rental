@@ -4,8 +4,8 @@
 $(function () {
 	prepareModal(true);
 	setupAutoSubmit();
-	prepareStatusSelects();
-	prepareDates();
+	prepareListing();
+	prepareCalendar();
 });
 
 /*
@@ -31,7 +31,7 @@ function prepareModal(isForm) {
 		// Formularvalidierung per AJAX im Dialog (z. B. beim Login)
 		elModal.parents('form').submit(function () {
 			return $.post(this.action, $(this).serialize() + '&ajax=true', function (data) {
-				if (data.status == 0) {
+				if (typeof data != undefined && data.status == 0) {
 					$('#modal .errors').empty().append(data.content);
 					return false;
 				}
@@ -59,30 +59,10 @@ function prepareModal(isForm) {
 		});
 	}
 
-/*
-	el = elModal.find('table.calendar');
-	if (el.length > 0) {
-		el.find('th.left a').click(function() {
-			$('#black').remove();
-			$.post(base_url + this.href, 'ajax=true', function (data) {
-				if (data.status == 1) {
-					openModal(data.content);
-				}
-			}, 'json');
-			return false;
-		});
-
-		el.find('th.left a').click(function() {
-			$('#black').remove();
-			$.post(base_url + this.href, 'ajax=true', function (data) {
-				if (data.status == 1) {
-					openModal(data.content);
-				}
-			}, 'json');
-			return false;
-		});
-	}
-*/
+	elModal.center({'factorY': 0.75});
+	$(window).bind('resize', function() {
+		elModal.center({'factorY': 0.75});
+	});
 }
 
 /*
@@ -92,7 +72,7 @@ function setupAutoSubmit() {
 	$('.optbutton').hide();
 	$('.autosubmit').change(function () {
 		$.post($(this).parents('form').attr('action'), this.name + '=' + this.value + '&ajax=true', function (data) {
-			if (typeof data.status != undefined && data.status != 0 && data.content) {
+			if (typeof data != undefined && data.status != 0 && data.content) {
 				openModal(data.content, true);
 			} else {
 				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
@@ -104,11 +84,10 @@ function setupAutoSubmit() {
 /*
  * Versteckt die Status-Auswahlfelder in Auflistungen (z. B. Buchungen)
  */
-function prepareStatusSelects() {
+function prepareListing() {
 	var el = $('.listing-action');
 	if (el.length > 0) {
-		var el2 = document.createElement('a');
-		$(el2).attr('href', '.').click(function () {
+		var el2 = $('<a href="." />').click(function () {
 			$(this).hide().siblings('select').show();
 			return false;
 		});
@@ -117,19 +96,43 @@ function prepareStatusSelects() {
 	}
 }
 
-function prepareDates() {
-	var el = $('.date');
-	if (el.length > 0) {
-		var el2 = document.createElement('a');
-		$(el2).attr('href', '.').click(function () {
-			$.post(base_url + 'bookings/calendar/', $.param({'date': $(this).find('span').text()}) + '&ajax=true', function (data) {
-				if (data.status == 1) {
-					openModal(data.content);
-				}
-			}, 'json');
-			return false;
-		});
+/*
+ * AJAX für zurück/vor-Buttons vom Kalender, Links zum Markieren von Buchungen
+ */
+function prepareCalendar() {
+	$('.calendar_top .prev a, .calendar_top .next a').click(function () {
+		$.post(this.href, 'ajax=true', function (data) {
+			if (typeof data != undefined && data.status != 0 && data.content) {
+				$('#calendar').empty().append(data.content);
+				prepareCalendar();
+			} else {
+				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
+			}
+		}, 'json');
+		return false;
+	});
+	
+	var $el = $('.booking-title');
+	if ($el.length > 0) {
+		$el.replaceWith(function () {
+			$t = $(this);
+			return $('<a href="." data-id="' + $t.attr('data-id') + '">' + $t.text() + '</a>').click(function () {
+				var className = 'booking-record-' + $(this).attr('data-id');
+				var $records = $('*[class*="booking-record-"]');
+				var $record;
 
-		el.wrap(el2);
+				for (var i = 0; i < $records.length; i++) {
+					$record = $($records[i]);
+					if ($record.hasClass(className)) {
+						$record.toggleClass('highlight');
+					} else {
+						$record.removeClass('highlight');
+					}
+				}
+				return false;
+			});
+		});
 	}
+
+	$('*[class*="booking-record-"]').removeClass('highlight');
 }

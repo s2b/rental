@@ -116,6 +116,7 @@ ol ol ol { list-style-type: upper-roman; }
 li, dd { margin-left: 3em; }
 
 ol.sem, ul.sem { list-style: none; }
+ol.sem li, ul.sem li { margin-left: 0; }
 ol.inline > li, ul.inline > li { display: inline;
 	list-style: none; margin-left: 0; }
 

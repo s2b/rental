@@ -33,6 +33,12 @@ class Bookings extends Controller
 	 */
 	function inventory()
 	{
+		if ($this->uri->segment(3) == 'action')
+		{
+			$this->_action();
+			return;
+		}
+
 		// Verfügbare Aktionen
 		$actions = array(
 			BOOKING_CONFIRMED => 'bestätigen',
@@ -42,11 +48,20 @@ class Bookings extends Controller
 			'' => '------',
 			BOOKING_DELETE => 'löschen');
 
+		$bookings = $this->bookings_model->listing(false, true);
+
+		if ($this->ajax)
+		{
+			echo json_encode(array('status' => 1, 'content' => $this->_calendar('inventory', $bookings)));
+			return;
+		}
+
 		// Daten fürs View
 		$data = array(
+			'calendar' => $this->_calendar('inventory', $bookings),
 			'is_inventory' => true,
-			'form_url' => 'bookings/action/inventory',
-			'bookings' => $this->bookings_model->listing(),
+			'form_url' => 'bookings/inventory/action',
+			'bookings' => $bookings,
 			'actions' => $actions
 		);
 
@@ -60,6 +75,12 @@ class Bookings extends Controller
 	 */
 	function studio()
 	{
+		if ($this->uri->segment(3) == 'action')
+		{
+			$this->_action();
+			return;
+		}
+
 		// Verfügbare Aktionen
 		$actions = array(
 			BOOKING_CONFIRMED => 'bestätigen',
@@ -67,11 +88,20 @@ class Bookings extends Controller
 			'' => '',
 			BOOKING_DELETE => 'löschen');
 
+		$bookings = $this->bookings_model->listing(true, true);
+
+		if ($this->ajax)
+		{
+			echo json_encode(array('status' => 1, 'content' => $this->_calendar('inventory', $bookings)));
+			return;
+		}
+
 		// Daten fürs View
 		$data = array(
+			'calendar' => $this->_calendar('inventory', $bookings),
 			'is_inventory' => false,
-			'form_url' => 'bookings/action/studio',
-			'bookings' => $this->bookings_model->listing(true),
+			'form_url' => 'bookings/studio/action',
+			'bookings' => $bookings,
 			'actions' => $actions
 		);
 
@@ -80,53 +110,46 @@ class Bookings extends Controller
 		$this->load->view('footer');
 	}
 
-	function calendar()
+	function _calendar($page, $bookings)
 	{
-		if (!$this->ajax)
-		{
-			exit;
-		}
-
-		$date = $this->input->post('date');
-		$date = strtotime($date);
-
-		$year = ($this->uri->segment(3)) ? $this->uri->segment(3) : date('Y', $date);
-		$month = ($this->uri->segment(4)) ? $this->uri->segment(4) : date('m', $date);
-
-		$markers = array();
-		if (date('m', $date) == $month)
-		{
-			$markers[date('d', $date)] = '';
-		}
+		$year = (int) $this->uri->segment(3, date('Y'));
+		$month = (int) $this->uri->segment(4, date('m'));
 
 		$prefs = array(
-			'start_day' => 'monday',
-			'show_next_prev'  => TRUE,
-			'next_prev_url'   => base_url() . 'bookings/calendar',
-			'template' => $this->load->view('bookings/calendar_template', '', true)
+			'first_weekday' => 'Mon',
+			'show_next_prev' => true,
+			'next_prev_url' => base_url() . "bookings/$page"
 		);
 
 		$this->load->library('calendar', $prefs);
 
-		$content = $this->load->view('bookings/calendar', array(
-			'calendar' => $this->calendar->generate($year, $month, $markers)
-		), true);
+		$this->calendar->select_month($month, $year);
 
-		echo json_encode(array('status' => 1, 'content' => $content));
+		foreach ($bookings as $booking)
+		{
+			if ($booking->status == BOOKING_CONFIRMED || $booking->status == BOOKING_BORROWED)
+			{
+				$this->calendar->add_date_timestamp(strtotime($booking->start), strtotime($booking->end), $booking->desc, array('id' => $booking->id));
+			}
+		}
+
+		return $this->calendar->generate();
 	}
 
 	/**
 	 * Buchungsstatus bearbeiten oder Buchung löschen
 	 */
-	function action()
+	function _action()
 	{
+		$page = $this->uri->segment(2);
+		
 		$actions = $this->input->post('action');
 		$update = $this->input->post('update');
 
 		// Zurück, wenn Parameter fehlen oder abgebrochen wird
 		if (!$actions || $this->input->post('cancel'))
 		{
-			redirect('bookings/' . $this->uri->segment(3));
+			redirect("bookings/$page");
 		}
 
 		// Buchung und neuen Status bestimmen
@@ -163,7 +186,7 @@ class Bookings extends Controller
 			else
 			{
 				// Weiterleiten zur Auflistung
-				redirect('bookings/' . $this->uri->segment(3));
+				redirect('bookings/' . $this->uri->segment(2));
 			}
 		}
 		else
@@ -171,8 +194,8 @@ class Bookings extends Controller
 			// Daten fürs View
 			$data = array(
 				'hidden_fields' => form_hidden('action[' . $booking_id . ']', BOOKING_DELETE),
-				'is_inventory' => ($this->uri->segment(3) == 'inventory'),
-				'form_url' => 'bookings/action/' . $this->uri->segment(3)
+				'is_inventory' => ($this->uri->segment(2) == 'inventory'),
+				'form_url' => 'bookings/' . $this->uri->segment(2) . 'action/'
 			);
 
 			if ($this->ajax)
@@ -211,7 +234,7 @@ class Bookings extends Controller
 			else
 			{
 				// Weiterleiten zur Auflistung
-				redirect('bookings/' . $this->uri->segment(3));
+				redirect('bookings/' . $this->uri->segment(2));
 			}
 		}
 		else
@@ -221,8 +244,8 @@ class Bookings extends Controller
 				'new_status' => $this->bookings_model->status_text[$booking_status],
 				
 				'hidden_fields' => form_hidden('action[' . $booking_id . ']', $booking_status),
-				'is_inventory' => ($this->uri->segment(3) == 'inventory'),
-				'form_url' => 'bookings/action/' . $this->uri->segment(3)
+				'is_inventory' => ($this->uri->segment(2) == 'inventory'),
+				'form_url' => 'bookings/' . $this->uri->segment(2) . '/action'
 			);
 			
 			if ($this->ajax)

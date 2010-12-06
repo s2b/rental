@@ -1,9 +1,14 @@
 @import 's2b-base.css';
 
+html {
+	height: 100%;
+}
+
 body {
 	background-color: #EEE;
 	color: #4F5155;
 	font-family: 'Lucida Grande', 'Lucida Sans', sans-serif;
+	height: 100%;
 }
 
 h1 {
@@ -15,6 +20,13 @@ a {
 	color: #18afa5;
 }
 
+.hidden {
+	display: none;
+}
+
+/*
+ * Formulare
+ */
 fieldset dl {
 	clear: left;
 }
@@ -50,10 +62,9 @@ textarea.max {
 	width: 100%;
 }
 
-.hidden {
-	display: none;
-}
-
+/*
+ * Auflistung
+ */
 table.listing {
 	width: 100%;
 }
@@ -70,36 +81,100 @@ table.listing th.center {
 
 table.listing td {
 	background-color: #FFF;
-}
-
-table.listing td, table.listing tr.noline td.line {
-	border-bottom: 1px solid #D0D0D0;
+	border: 0 solid #D0D0D0;
 }
 
 table.listing tr.noline td {
-	border-bottom: 0;
+	border-width: 0;
+}
+
+table.listing td {
+	border-bottom-width: 1px;
+}
+
+table.listing td.line-l, table.listing tr.noline td.line-l {
+	border-left-width: 1px;
+}
+
+table.listing tr.noline td.line-r {
+	border-width: 0 1px 1px;
+}
+
+table.listing tr.highlight td, td.highlight, table.calendar td.highlight {
+	background-color: #FEDF98 !important;
+}
+
+/*
+ * Kalender
+ */
+div.calendar_top {
+	padding: 0 0.5em;
+}
+
+div.calendar_top .prev, div.calendar_top .next {
+	float: left;
+	width: 30%;
+}
+
+div.calendar_top a {
+	display: block;
+	height: 32px;
+	width: 32px;
+	background-repeat: no-repeat;
+}
+
+div.calendar_top .prev a {
+	background-image: url(images/prev.png);
+}
+
+div.calendar_top .prev a:hover {
+	background-image: url(images/prev_down.png);
+}
+
+div.calendar_top .next a {
+	background-image: url(images/next.png);
+	float: right;
+}
+
+div.calendar_top .next a:hover {
+	background-image: url(images/next_down.png);
+}
+
+div.calendar_top .month {
+	float: left;
+	width: 40%;
+	margin-bottom: 0;
+	text-align: center;
+	line-height: 32px;
+	vertical-align: middle;
 }
 
 table.calendar {
 	width: 100%;
-	border: 1px #000 solid;
 }
 
 table.calendar th {
-	border-top: 1px #000 solid;
+	padding-top: 0;
 }
 
 table.calendar td {
-	border: #000 solid;
-	border-width: 1px 1px 0 0;
-	padding: 10px 5px;
+	border: 1px #D0D0D0 solid;
+	padding: 4px 6px;
 	width: 14%;
+	background-color: #FFF;
 }
 
-table.calendar td:empty, table.calendar tr td:nth-child(6), table.calendar tr td:nth-child(7) {
-	background-color: #DEDEDE;
+table.calendar td.today {
+	background-color: #BCEEEF;
 }
 
+table.calendar td.empty {
+	background-color: transparent;
+}
+
+/*
+ * Nachrichten
+ */
 div.message {
 	margin: 2em 0;
 	padding: 0.8em;
@@ -117,6 +192,9 @@ div.errors p, div.message p {
 	margin-bottom: 0.4em;
 }
 
+/*
+ * Seitenstruktur
+ */
 #navigation-bar, #navigation {
 	position: absolute;
 	top: 0;
@@ -181,9 +259,12 @@ div.errors p, div.message p {
 
 #content {
 	margin-left: 220px;
-	padding: 1em 1.5em;
+	padding: 1em 1.5em 1.5em;
 }
 
+/*
+ * Modales Fenster
+ */
 #black {
 	position: fixed;
 	top: 0;
@@ -197,9 +278,10 @@ div.errors p, div.message p {
 
 #modal {
 	width: 500px;
-	margin: 10% auto 0;
+	margin: 10% auto 10%;
 	padding: 1.5em 2em;
 	background-color: #FFF;
+	overflow: auto;
 }
 
 #modal .bar-top, #modal .bar-bottom {
