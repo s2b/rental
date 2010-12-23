@@ -108,6 +108,13 @@ table.listing tr.highlight td, td.highlight, table.calendar td.highlight {
 }
 
 /*
+ * Auflistung: Buttons
+ */
+.listing-buttons {
+	margin: 0.5em;
+}
+
+/*
  * Kalender
  */
 div.calendar_top {
@@ -132,7 +139,7 @@ div.calendar_top a {
 	height: 32px;
 	width: 32px;
 	background-repeat: no-repeat;
-	background-image: url(images/prev_next.png);
+	background-image: url(images/icons.png);
 }
 
 div.calendar_top .prev a {
@@ -221,6 +228,23 @@ table.calendar td.empty {
 	-moz-border-radius-topright: 0.5em;
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
+}
+
+/*
+ * Links
+ */
+a.add {
+	display: block;
+	height: 32px;
+	background-repeat: no-repeat;
+	background-image: url(images/icons.png);
+	background-position: -64px 0;
+	line-height: 32px;
+	padding-left: 36px;
+}
+
+a.add:hover {
+	background-position: -64px -32px;
 }
 
 /*

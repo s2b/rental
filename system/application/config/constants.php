@@ -55,6 +55,13 @@ define('BOOKING_BORROWED', 2);
 define('BOOKING_CLOSED', 3);
 define('BOOKING_DENIED', 4);
 define('BOOKING_DELETE', -1);
+define('BOOKING_ARCHIVE', 10);
+
+//
+// Inventory constants
+//
+define('INVENTORY_ACTIVE', 1);
+define('INVENTORY_INACTIVE', 2);
 
 
 /* End of file constants.php */
