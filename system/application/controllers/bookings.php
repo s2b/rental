@@ -61,7 +61,7 @@ class Bookings extends Controller
 			'calendar' => $this->_calendar('inventory', $bookings),
 			'is_inventory' => true,
 			'form_url' => 'bookings/inventory/action',
-			'bookings' => $bookings,
+			'bookings' => $this->_bookings_categories($bookings),
 			'actions' => $actions
 		);
 
@@ -92,16 +92,16 @@ class Bookings extends Controller
 
 		if ($this->ajax)
 		{
-			echo json_encode(array('status' => 1, 'content' => $this->_calendar('inventory', $bookings)));
+			echo json_encode(array('status' => 1, 'content' => $this->_calendar('studio', $bookings)));
 			return;
 		}
 
 		// Daten fürs View
 		$data = array(
-			'calendar' => $this->_calendar('inventory', $bookings),
+			'calendar' => $this->_calendar('studio', $bookings),
 			'is_inventory' => false,
 			'form_url' => 'bookings/studio/action',
-			'bookings' => $bookings,
+			'bookings' => $this->_bookings_categories($bookings),
 			'actions' => $actions
 		);
 
@@ -129,18 +129,56 @@ class Bookings extends Controller
 		{
 			if ($booking->status == BOOKING_CONFIRMED || $booking->status == BOOKING_BORROWED)
 			{
-				$this->calendar2->add_date_timestamp(strtotime($booking->start), strtotime($booking->end), $booking->desc, array('id' => $booking->id));
+				$this->calendar2->add_date_timestamp(strtotime($booking->start), strtotime($booking->end), $booking->desc, array('id' => $booking->id, 'status' => $booking->status));
 			}
 		}
-
+		
 		return $this->calendar2->generate();
+	}
+
+	function _bookings_categories($bookings)
+	{
+		$categories = array();
+		foreach ($bookings as $booking)
+		{
+			if (!isset($categories[$booking->status]))
+			{
+				$status = (in_array($booking->status, array(BOOKING_CLOSED, BOOKING_DENIED))) ? BOOKING_ARCHIVE : $booking->status;
+				
+				$categories[$status] = new stdClass();
+				$categories[$status]->bookings = array();
+
+				switch ($status)
+				{
+					case BOOKING_NEW:
+						$categories[$status]->title = 'offene Buchungen';
+					break;
+
+					case BOOKING_CONFIRMED:
+						$categories[$status]->title = 'bestätigte Buchungen';
+					break;
+
+					case BOOKING_BORROWED:
+						$categories[$status]->title = 'ausgeliehene Buchungen';
+					break;
+
+					case BOOKING_ARCHIVE:
+						$categories[$status]->title = 'Buchungsarchiv';
+					break;
+				}
+			}
+
+			$categories[$status]->bookings[] = $booking;
+		}
+
+		return $categories;
 	}
 
 	/**
 	 * Buchungsstatus bearbeiten oder Buchung löschen
 	 */
 	function _action()
-	{
+	{		
 		$page = $this->uri->segment(2);
 		
 		$actions = $this->input->post('action');
@@ -155,6 +193,11 @@ class Bookings extends Controller
 		// Buchung und neuen Status bestimmen
 		$booking_id = (is_array($update)) ? key($update) : key($actions);
 		$booking_status = $actions[$booking_id];
+
+		if (!$this->bookings_model->check($booking_id))
+		{
+			return;
+		}
 
 		// Status oder löschen?
 		if ($booking_status == BOOKING_DELETE)

@@ -164,8 +164,8 @@ class Calendar2
 
 	function add_date_timestamp($start, $end, $desc = '', $data = null)
 	{
-		if (date('Y', $start) > $this->year || date('m', $start) > $this->month
-			|| date('Y', $end) < $this->year || date('m', $end) < $this->month)
+		if (date('Y', $start) > $this->year || (date('Y', $start) == $this->year && date('m', $start) > $this->month)
+			|| date('Y', $end) < $this->year || (date('Y', $end) == $this->year && date('m', $end) < $this->month))
 		{
 			return;
 		}
@@ -177,11 +177,11 @@ class Calendar2
 		}
 
 		$temp = $this->year . '-' . $this->month;
-		if (date('Y-m', $start) != $temp)
+		if (date('Y-n', $start) != $temp)
 		{
 			$start = strtotime("$temp-01 0:00:00");
 		}
-		if (date('Y-m', $end) != $temp)
+		if (date('Y-n', $end) != $temp)
 		{
 			$end = strtotime("$temp-" . days_in_month($this->month, $this->year) . ' 23:59:59');
 		}

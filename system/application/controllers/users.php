@@ -7,7 +7,7 @@ class Users extends Controller
 		parent::Controller();
 
 		// Nur für eingeloggte Benutzer
-		if (!$this->session->userdata('user_id'))
+		if (!$this->session->logged_in)
 		{
 			redirect('/home/login');
 		}
@@ -36,6 +36,11 @@ class Users extends Controller
 
 	function role()
 	{
+		if (!$this->user_model->check($this->uri->segment(3)))
+		{
+			return;
+		}
+		
 		$user_id = $this->uri->segment(3);
 
 		$new_role = $this->user_model->toggle_role($user_id);
@@ -52,9 +57,12 @@ class Users extends Controller
 
 	function status()
 	{
-		$user_id = $this->uri->segment(3);
+		if (!$this->user_model->check($this->uri->segment(3)))
+		{
+			return;
+		}
 		
-		$new_status = $this->user_model->toggle_status($user_id);
+		$new_status = $this->user_model->toggle_status($this->uri->segment(3));
 
 		if ($this->ajax)
 		{
@@ -68,6 +76,12 @@ class Users extends Controller
 
 	function edit()
 	{
+		$user = $this->user_model->get($this->uri->segment(3));
+		if (!$user)
+		{
+			return;
+		}
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
@@ -117,7 +131,7 @@ class Users extends Controller
 		// Daten fürs View
 		$data = array(
 			'semesters' => $this->user_model->semester(),
-			'user' => $this->user_model->get($this->uri->segment(3)),
+			'user' => $user,
 			'form_url' => 'users/edit/' . $this->uri->segment(3)
 		);
 
@@ -136,6 +150,11 @@ class Users extends Controller
 
 	function delete()
 	{
+		if (!$this->user_model->check($this->uri->segment(3)))
+		{
+			return;
+		}
+		
 		if ($this->input->post('delete'))
 		{
 			// Benutzer aus der Datenbank löschen

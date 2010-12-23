@@ -7,44 +7,46 @@
 </div>
 <?php endif ?>
 
-<table class="calendar">
-	<tr>
-		<?php foreach ($days as $day): ?>
-		<th><?php echo $day ?></th>
-		<?php endforeach ?>
-	</tr>
-	<?php foreach ($calendar as $week): ?>
-	<tr>
-		<?php foreach ($week as $day): ?>
-		<?php if (!$day): ?>
-		<td class="empty"></td>
-		<?php else: ?>
-		<?php
-		$classes = ($day['today']) ? 'today' : '';
-		if (!empty($day['dates']))
-		{
-			foreach ($day['dates'] as $date)
+<div class="calendar">
+	<table class="calendar">
+		<tr>
+			<?php foreach ($days as $day): ?>
+			<th><?php echo $day ?></th>
+			<?php endforeach ?>
+		</tr>
+		<?php foreach ($calendar as $week): ?>
+		<tr>
+			<?php foreach ($week as $day): ?>
+			<?php if (!$day): ?>
+			<td class="empty"></td>
+			<?php else: ?>
+			<?php
+			$classes = ($day['today']) ? 'today' : '';
+			if (!empty($day['dates']))
 			{
-				$classes .= ' booking-record-' . $date['data']['id'];
+				foreach ($day['dates'] as $date)
+				{
+					$classes .= ' booking-record-' . $date['data']['id'];
+				}
 			}
-		}
-		?>
-		<td class="<?php echo $classes ?>">
-			<div class="right"><strong><?php echo $day['day'] ?></strong></div>
-			<?php if (!empty($day['dates'])): ?>
-			<ul class="sem marginalia">
-				<?php foreach ($day['dates'] as $date): ?>
-				<li>
-					<span class="booking-title" data-id="<?php echo $date['data']['id'] ?>">
-						<?php echo (($date['timeframe']) ? $date['timeframe'] . ': ' : '') . $date['desc'] ?>
-					</span>
-				</li>
-				<?php endforeach ?>
-			</ul>
+			?>
+			<td class="<?php echo $classes ?>">
+				<div class="right"><strong><?php echo $day['day'] ?></strong></div>
+				<?php if (!empty($day['dates'])): ?>
+				<ul class="sem marginalia">
+					<?php foreach ($day['dates'] as $date): ?>
+					<li>
+						<span class="booking-title" data-id="<?php echo $date['data']['id'] ?>" data-tab="<?php echo $date['data']['status'] ?>">
+							<?php echo (($date['timeframe']) ? $date['timeframe'] . ': ' : '') . $date['desc'] ?>
+						</span>
+					</li>
+					<?php endforeach ?>
+				</ul>
+				<?php endif ?>
+			</td>
 			<?php endif ?>
-		</td>
-		<?php endif ?>
+			<?php endforeach ?>
+		</tr>
 		<?php endforeach ?>
-	</tr>
-	<?php endforeach ?>
-</table>
+	</table>
+</div>

@@ -16,7 +16,11 @@ class Bookings_model extends MY_Model
 
 	function listing($is_room = false, $updates = false)
 	{
-		$where_sql = ($is_room) ? 1 : 0;
+		if (isset($is_room))
+		{
+			$where_sql = 'WHERE b.booking_room = ' . (int) $is_room;
+		}
+
 		$sql = 'SELECT b.booking_id, b.booking_status, b.booking_time, b.booking_start, b.booking_end,
 					b.booking_desc, b.user_id AS booking_user_id, u_b.user_name AS booking_user_name,
 					u_b.user_email AS booking_user_email, u_b.semester_id AS booking_semester_id,
@@ -28,8 +32,8 @@ class Bookings_model extends MY_Model
 				ON u_b.user_id = b.user_id
 			INNER JOIN inventory i
 			   ON i.inventory_id = bi.inventory_id
-			WHERE b.booking_room = ' . $where_sql . '
-			ORDER BY b.booking_time DESC, b.booking_status';
+			' . $where_sql . '
+			ORDER BY b.booking_status, b.booking_time DESC';
 		$query = $this->db->query($sql);
 
 		$bookings = array();
@@ -113,6 +117,18 @@ class Bookings_model extends MY_Model
 		$query->free_result();
 
 		return $updates;
+	}
+
+	function check($id)
+	{
+		$this->db->select('booking_id');
+		$this->db->where('booking_id', $id);
+		$query = $this->db->get($this->table);
+
+		$result = $query->result();
+		$query->free_result();
+
+		return (!empty($result));
 	}
 
 	function add($start, $end, $desc, $is_room = false)

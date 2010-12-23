@@ -6,6 +6,7 @@ $(function () {
 	setupAutoSubmit();
 	prepareListing();
 	prepareCalendar();
+	prepareTabs();
 });
 
 /*
@@ -144,23 +145,53 @@ function prepareCalendar() {
 	if ($el.length > 0) {
 		$el.replaceWith(function () {
 			$t = $(this);
-			return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '">' + $t.text() + '</a>').click(function () {
-				var className = 'booking-record-' + $(this).attr('data-id');
-				var $records = $('*[class*="booking-record-"]');
-				var $record;
+			return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '" data-tab="' + $t.attr('data-tab') + '">' + $t.text() + '</a>').click(function () {
+				$t = $(this);
 
-				for (var i = 0; i < $records.length; i++) {
-					$record = $($records[i]);
-					if ($record.hasClass(className)) {
-						$record.toggleClass('highlight');
-					} else {
-						$record.removeClass('highlight');
-					}
-				}
+				$('.tab[data-tab="' + $t.attr('data-tab') + '"] a').click();
+
+				var className = 'booking-record-' + $t.attr('data-id');
+				$('*[class*="booking-record-"]').each(function () {
+					$t = $(this);
+					$t.toggleClass('highlight', $t.hasClass(className));
+				});
+				
 				return false;
 			});
 		});
 	}
 
 	$('*[class*="booking-record-"]').removeClass('highlight');
+}
+
+function prepareTabs() {
+	var $tabs = $('.tabs');
+
+	var $tabbar = $('<div class="tabbar" />');
+	$tabbar.append($tabs.children('h3').addClass('tab')).append('<div class="clear" />');
+
+	var $tabcontent = $('<div class="tabcontent" />');
+	$tabcontent.append($tabs.children('table').addClass('tab-content'));
+
+	$tabbar.children('.tab').wrapInner(function () {
+		return $('<a href=".">').click(function () {
+			var $parent = $(this).parent();
+			var tab = $parent.attr('data-tab');
+
+			$tabcontent = $('.tabs .tabcontent');
+			$tabcontent.children('.tab-content[data-tab!="' + tab + '"]').hide();
+			$tabcontent.children('.tab-content[data-tab="' + tab + '"]').show();
+
+			$parent.addClass('tab-selected');
+			$parent.siblings('.tab').removeClass('tab-selected');
+			
+			return false;
+		});
+	});
+
+	var $firstTab = $tabbar.children('.tab').first();
+	$firstTab.addClass('tab-selected');
+	$tabcontent.children('.tab-content[data-tab!="' + $firstTab.attr('data-tab') + '"]').hide();
+
+	$tabs.append($tabbar).append($tabcontent);
 }

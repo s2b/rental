@@ -51,6 +51,18 @@ class User_model extends MY_Model
 		return $users;
 	}
 
+	function check($id)
+	{
+		$this->db->select('user_id');
+		$this->db->where('user_id', $id);
+		$query = $this->db->get($this->table);
+
+		$result = $query->result();
+		$query->free_result();
+
+		return (!empty($result));
+	}
+
 	function get($id)
 	{
 		$this->db->where('user_id', $id);
