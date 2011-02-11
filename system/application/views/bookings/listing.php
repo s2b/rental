@@ -43,7 +43,7 @@
 					<span class="marginalia"><?php echo $this->user_model->semester($booking->user->semester_id) ?></span>
 				</td>
 				<td><?php echo date('d.m.Y G:i', strtotime($booking->time)) ?></td>
-				<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-r">
+				<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-l line-r line-b">
 					<span><?php echo $booking->status_text ?></span>
 					<select name="action[<?php echo $booking->id ?>]" class="autosubmit listing-action">
 						<option value="">Aktion</option>

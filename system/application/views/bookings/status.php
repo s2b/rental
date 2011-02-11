@@ -8,7 +8,7 @@
 			<dd><strong><?php echo $new_status ?></strong></dd>
 		</dl>
 		<dl>
-			<dt><label for="desc">Begründung:</label></dt>
+			<dt><label for="desc">Begründung (intern):</label></dt>
 			<dd><textarea name="desc" id="desc" class="max" cols="50" rows="4"></textarea></dd>
 		</dl>
 

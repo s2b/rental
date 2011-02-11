@@ -99,8 +99,12 @@ table.listing td.line-l, table.listing tr.noline td.line-l {
 	border-left-width: 1px;
 }
 
-table.listing tr.noline td.line-r {
-	border-width: 0 1px 1px;
+table.listing td.line-r, table.listing tr.noline td.line-r {
+	border-right-width: 1px;
+}
+
+table.listing td.line-b, table.listing tr.noline td.line-b {
+	border-bottom-width: 1px;
 }
 
 table.listing tr.highlight td, td.highlight, table.calendar td.highlight {

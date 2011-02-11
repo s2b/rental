@@ -14,13 +14,20 @@ class Bookings_model extends MY_Model
 		BOOKING_CLOSED => 'abgeschlossen',
 		BOOKING_DENIED => 'abgelehnt');
 
-	function listing($is_room = false, $updates = false)
+	function listing($is_room = false, $updates = false, $own_listing = false)
 	{
+		$where_sql = array();
 		if (isset($is_room))
 		{
-			$where_sql = 'WHERE b.booking_room = ' . (int) $is_room;
+			$where_sql[] = 'b.booking_room = ' . (int) $is_room;
 		}
-
+		
+		if ($own_listing)
+		{
+			$where_sql[] = 'b.user_id = ' . (int) $this->session->userdata('user_id');
+		}
+		
+		$where_sql = (!empty($where_sql)) ? 'WHERE ' . implode(' AND ', $where_sql) : '';
 		$sql = 'SELECT b.booking_id, b.booking_status, b.booking_time, b.booking_start, b.booking_end,
 					b.booking_desc, b.user_id AS booking_user_id, u_b.user_name AS booking_user_name,
 					u_b.user_email AS booking_user_email, u_b.semester_id AS booking_semester_id,

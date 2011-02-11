@@ -19,9 +19,15 @@ class Home extends Controller
 		{
 			redirect('/home/login/');
 		}
+		
+		$this->load->model('bookings_model');
+		
+		$data = array(
+			'inventory_bookings' => $this->bookings_model->listing(false, true, true),
+			'studio_bookings' => $this->bookings_model->listing(true, true, true));
 
 		$this->load->view('header');
-		$this->load->view('home/index');
+		$this->load->view('home/index', $data);
 		$this->load->view('footer');
 	}
 
