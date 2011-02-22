@@ -12,6 +12,14 @@ class MY_Model extends Model
 		$this->start = '';
 		$this->limit = '';
 	}
+	
+	function _order()
+	{
+		if ($this->order)
+		{
+			$this->db->order_by($this->order);
+		}
+	}
 }
 
 ?>

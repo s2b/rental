@@ -6,6 +6,7 @@ class Inventory_model extends MY_Model
 
 	var $start = '';
 	var $limit = '';
+	var $order = 'inventory_time desc';
 
 	var $inventory_status = array(
 		INVENTORY_ACTIVE => 'aktiv',
@@ -27,7 +28,7 @@ class Inventory_model extends MY_Model
 			$this->db->where('inventory_room', (int) $is_room);
 		}
 
-		$this->db->order_by('inventory_time', 'desc');
+		$this->_order();
 		$this->_limit();
 
 		$query = $this->db->get($this->table);
@@ -35,22 +36,22 @@ class Inventory_model extends MY_Model
 		$inventory = array();
 		foreach ($query->result() as $data)
 		{
-			$inv = new stdClass();
-			$inv->id = $data->inventory_id;
-			$inv->status = $data->inventory_status;
-			$inv->status_text = $this->inventory_status[$inv->status];
-			$inv->room = $data->inventory_room;
-			$inv->time = $data->inventory_time;
-			$inv->title = $data->inventory_title;
-			$inv->desc = $data->inventory_desc;
+			$item = new stdClass();
+			$item->id = $data->inventory_id;
+			$item->status = $data->inventory_status;
+			$item->status_text = $this->inventory_status[$item->status];
+			$item->room = $data->inventory_room;
+			$item->time = $data->inventory_time;
+			$item->title = $data->inventory_title;
+			$item->desc = $data->inventory_desc;
 
-			$inv->user = new stdClass();
-			$inv->user->id = $data->user_id;
-			$inv->user->name = $data->user_name;
-			$inv->user->email = $data->user_email;
-			$inv->user->semester_id = $data->semester_id;
+			$item->user = new stdClass();
+			$item->user->id = $data->user_id;
+			$item->user->name = $data->user_name;
+			$item->user->email = $data->user_email;
+			$item->user->semester_id = $data->semester_id;
 
-			$inventory[] = $inv;
+			$inventory[$item->id] = $item;
 		}
 		$query->free_result();
 

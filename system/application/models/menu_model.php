@@ -16,7 +16,8 @@ class Menu_model extends MY_Model
 			'bookings/inventory' => array('Inventarbuchungen', 2),
 			'bookings/studio' => array('Studio-Reservierungen', 2),
 			'users' => array('Benutzer', 1),
-			'inventory' => array('Inventar', 2));
+			'inventory' => array('Inventar', 1),
+			'packages' => array('Inventar-Pakete', 1));
 	}
 }
 

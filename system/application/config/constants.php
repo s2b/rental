@@ -63,6 +63,12 @@ define('BOOKING_ARCHIVE', 10);
 define('INVENTORY_ACTIVE', 1);
 define('INVENTORY_INACTIVE', 2);
 
+//
+// Package constants
+//
+define('PACKAGE_ACTIVE', 1);
+define('PACKAGE_INACTIVE', 2);
+
 
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */
