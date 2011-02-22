@@ -107,6 +107,66 @@ class Home extends Controller
 
 		$this->load->view('footer');
 	}
+	
+	/**
+	 * Registrierung
+	 */
+	function register()
+	{
+		if (!$this->ajax)
+		{
+			// bereits eingeloggt?
+			if ($this->session->logged_in)
+			{
+				redirect('/home/');
+			}
+
+			$this->load->view('header');
+		}
+
+		// Formularvalidierung vorbereiten
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('name', 'Name', 'required|min_length[3]|max_length[50]|xss_clean');
+		$this->form_validation->set_rules('email', 'E-Mailadresse', 'required|valid_email');
+		$this->form_validation->set_rules('password', 'Passwort', 'required|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', 'Passwort (Bestätigung)', 'required');
+		$this->form_validation->set_rules('student_id', 'Matrikelnummer', 'required|exact_length[6]|integer');
+		$this->form_validation->set_rules('semester', 'Semester', 'required|callback__semester_check');
+
+		/**
+		 * @todo
+		 */
+
+		// Formular validieren
+		if ($this->form_validation->run())
+		{
+			if (!$this->ajax)
+			{
+				// zur Übersicht weiterleiten
+				redirect('/home/');
+			}
+			else
+			{
+				// Benutzer hinzufügen
+				$this->user_model->add();
+				
+				// Erfolg per JSON zurückgeben
+				echo json_encode(array('status' => 1));
+			}
+		}
+
+		if (!$this->ajax)
+		{
+			$this->load->view('home/register');
+			$this->load->view('footer');
+		}
+		else
+		{
+			// Aufruf per AJAX => Validierungsfehler im JSON-Objekt zurückgeben
+			echo json_encode(array('status' => 0, 'content' => validation_errors()));
+		}
+	}
 
 	/**
 	 * Callback-Funktion für die Login-Validierung
