@@ -1,12 +1,68 @@
+(function ($) {
+
+if (typeof calendarLinks == 'undefined') {
+	var calendarLinks = calendarLinks || true;
+}
+
 /*
  * Formulare vorbereiten bei onDomReady
  */
-$(function () {
+$(document).ready(function () {
 	prepareModal(true);
 	setupAutoSubmit();
 	prepareListing();
-	prepareCalendar();
 	prepareTabs();
+});
+
+/*
+ * AJAX für zurück/vor-Buttons vom Kalender, Links zum Markieren von Buchungen
+ */
+$.fn.Calendar = (function (options) {
+	var options = $.extend({
+		links: true,
+		clickAction: false
+	}, options);
+	
+	var $this = $(this);
+	
+	$this.find('.calendar_top .prev a, .calendar_top .next a').click(function () {
+		$.post(this.href, 'ajax=true', function (data) {
+			if (typeof data != undefined && data.status != 0 && data.content) {
+				$this.empty().append(data.content).Calendar(options);
+			} else {
+				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
+			}
+		}, 'json');
+		return false;
+	});
+	
+	if (options['links']) {
+		var $el = $('.booking-title');
+		if ($el.length > 0) {
+			$el.replaceWith(function () {
+				$t = $(this);
+				return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '" data-tab="' + $t.attr('data-tab') + '">' + $t.text() + '</a>').click(function () {
+					$t = $(this);
+
+					$('.tab[data-tab="' + $t.attr('data-tab') + '"] a').click();
+	
+					var className = 'booking-record-' + $t.attr('data-id');
+					$('*[class*="booking-record-"]').each(function () {
+						$t = $(this);
+						$t.toggleClass('highlight', $t.hasClass(className));
+					});
+					
+					return false;
+				});
+			});
+		}
+	
+		$('*[class*="booking-record-"]').removeClass('highlight');
+	}
+	
+	if (options['clickAction']) {
+	
+	}
 });
 
 /*
@@ -86,6 +142,7 @@ function setupAutoSubmit() {
  * Versteckt die Status-Auswahlfelder in Auflistungen (z. B. Buchungen)
  */
 function prepareListing() {
+	/* Table listings */
 	var el = $('.listing-action');
 	if (el.length > 0) {
 		var el2 = $('<a href="." />').click(function () {
@@ -97,7 +154,7 @@ function prepareListing() {
 	}
 
 	$('.edit-link').click(function () {
-		$t = $(this);
+		var $t = $(this);
 
 		$.post($t.attr('href'), 'ajax=true', function (data) {
 			if (typeof data != undefined && data.status != 0 && data.content) {
@@ -111,7 +168,7 @@ function prepareListing() {
 	});
 
 	$('.modal-link').click(function () {
-		$t = $(this);
+		var $t = $(this);
 
 		$.post($t.attr('href'), 'ajax=true', function (data) {
 			if (typeof data != undefined && data.status != 0 && data.content) {
@@ -123,45 +180,48 @@ function prepareListing() {
 
 		return false;
 	});
-}
-
-/*
- * AJAX für zurück/vor-Buttons vom Kalender, Links zum Markieren von Buchungen
- */
-function prepareCalendar() {
-	$('.calendar_top .prev a, .calendar_top .next a').click(function () {
-		$.post(this.href, 'ajax=true', function (data) {
-			if (typeof data != undefined && data.status != 0 && data.content) {
-				$('#calendar').empty().append(data.content);
-				prepareCalendar();
-			} else {
-				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
-			}
-		}, 'json');
-		return false;
+	
+	/* UL listings */
+	$(':checkbox').click(function (e) {
+		var $this = $(this);
+		$('input[name="' + $this.attr('name') + '"]').attr('checked', $this.attr('checked'));
+		
+		e.stopPropagation();
 	});
 	
-	var $el = $('.booking-title');
-	if ($el.length > 0) {
-		$el.replaceWith(function () {
-			$t = $(this);
-			return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '" data-tab="' + $t.attr('data-tab') + '">' + $t.text() + '</a>').click(function () {
-				$t = $(this);
-
-				$('.tab[data-tab="' + $t.attr('data-tab') + '"] a').click();
-
-				var className = 'booking-record-' + $t.attr('data-id');
-				$('*[class*="booking-record-"]').each(function () {
-					$t = $(this);
-					$t.toggleClass('highlight', $t.hasClass(className));
-				});
+	$('ul.listing > li').each(function () {
+		var $this = $(this);
+		
+		$checkbox = $this.children('.listing-checkbox').find(':checkbox');
+		if ($checkbox.length > 0) {
+			$this.css('cursor', 'pointer').click(function () {
+				$checkbox = $this.children('.listing-checkbox').find(':checkbox');
 				
-				return false;
+				/* strange bugfix */
+				$checkbox.attr('checked', !$checkbox.attr('checked'))
+				         .click()
+				         .attr('checked', !$checkbox.attr('checked'));
 			});
-		});
-	}
-
-	$('*[class*="booking-record-"]').removeClass('highlight');
+		}
+	});
+	
+	$('ul.listing.toggle').each(function () {
+		$(this).hide().parent().prepend($('<a href="." class="listing-button" title="Details">Details</a>').click(function () {
+			var $this = $(this);
+			
+			if ($this.hasClass('opened')) {
+				$this.nextAll('ul.listing.toggle').slideUp(function () {
+					$this.removeClass('opened');
+				});
+			} else {
+				$this.nextAll('ul.listing.toggle').slideDown(function () {
+					$this.addClass('opened');
+				});
+			}
+			
+			return false;
+		}));
+	});
 }
 
 function prepareTabs() {
@@ -171,23 +231,21 @@ function prepareTabs() {
 	$tabbar.append($tabs.children('h3').addClass('tab')).append('<div class="clear" />');
 
 	var $tabcontent = $('<div class="tabcontent" />');
-	$tabcontent.append($tabs.children('table').addClass('tab-content'));
+	$tabcontent.append($tabs.children('.listing').addClass('tab-content'));
 
-	$tabbar.children('.tab').wrapInner(function () {
-		return $('<a href=".">').click(function () {
-			var $parent = $(this).parent();
-			var tab = $parent.attr('data-tab');
+	$tabbar.children('.tab').wrapInner($('<a href=".">').click(function () {
+		var $parent = $(this).parent();
+		var tab = $parent.attr('data-tab');
 
-			$tabcontent = $('.tabs .tabcontent');
-			$tabcontent.children('.tab-content[data-tab!="' + tab + '"]').hide();
-			$tabcontent.children('.tab-content[data-tab="' + tab + '"]').show();
+		$tabcontent = $('.tabs .tabcontent');
+		$tabcontent.children('.tab-content[data-tab!="' + tab + '"]').hide();
+		$tabcontent.children('.tab-content[data-tab="' + tab + '"]').show();
 
-			$parent.addClass('tab-selected');
-			$parent.siblings('.tab').removeClass('tab-selected');
-			
-			return false;
-		});
-	});
+		$parent.addClass('tab-selected');
+		$parent.siblings('.tab').removeClass('tab-selected');
+		
+		return false;
+	}));
 
 	var $firstTab = $tabbar.children('.tab').first();
 	$firstTab.addClass('tab-selected');
@@ -195,3 +253,5 @@ function prepareTabs() {
 
 	$tabs.append($tabbar).append($tabcontent);
 }
+
+})(jQuery);

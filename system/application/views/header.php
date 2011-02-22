@@ -6,9 +6,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>style/ausleihe2.css" />
+		
+		<script type="text/javascript">var base_url = '<?php echo stripslashes(base_url()) ?>';</script>
+		<script type="text/javascript" src="<?php echo base_url() ?>style/jquery-1.5.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url() ?>style/jquery-plugins.js"></script>
+		<script type="text/javascript" src="<?php echo base_url() ?>style/ausleihe2.js"></script>
 	</head>
 	<body>
-	<div id="navigation-bar"></div>
 	<div id="navigation">
 		<div id="logo">
 			<h1><?php echo anchor('/home', 'Ausleihe') ?></h1>

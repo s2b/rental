@@ -97,3 +97,9 @@
 </div>
 </form>
 <?php endif; ?>
+
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+	$('#calendar').Calendar();
+});
+</script>

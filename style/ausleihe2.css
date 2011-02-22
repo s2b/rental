@@ -8,7 +8,7 @@ html {
 body {
 	min-height: 100%;
 	margin-left: 220px;
-	border-left: 1px solid #D0D0D0;
+	border-left: 1px #D0D0D0 solid;
 	background-color: #EEE;
 	color: #4F5155;
 	font-family: 'Lucida Grande', 'Lucida Sans', sans-serif;
@@ -30,6 +30,20 @@ a {
 /*
  * Formulare
  */
+fieldset {
+	background-color: #FFF;
+	padding: 1.5em 2em;
+	margin: 1.5em 0;
+	border: 1px #D0D0D0 solid;
+}
+
+legend {
+	margin-left: -0.5em;
+	padding: 5px 10px;
+	background-color: #333;
+	color: #FFF;
+}
+
 fieldset dl {
 	clear: left;
 }
@@ -49,10 +63,12 @@ fieldset dd {
 
 input[type=text], input[type=password], input[type=email] {
 	width: 100%;
+	border: 1px #CCC solid;
+	padding: 3px;
 }
 
 input[type=submit], input[type=reset] {
-	background-image: url("images/btn.png");
+	background-image: url(images/btn.png);
 	border: medium none;
 	color: #FFF;
 	height: 30px;
@@ -61,8 +77,25 @@ input[type=submit], input[type=reset] {
 	-moz-box-shadow:0 0 5px #999999;
 }
 
+input.min {
+	width: auto;
+}
+
 textarea.max {
 	width: 100%;
+}
+
+fieldset.buttons {
+	text-align: center;
+	padding: 1em;
+}
+
+fieldset.buttons input {
+	margin-top: 0;
+}
+
+fieldset div.calendar_top {
+	margin-top: 0;
 }
 
 /*
@@ -75,7 +108,7 @@ table.listing {
 table.listing th {
 	text-align: left;
 	background-color: transparent;
-	border-bottom: 1px solid #D0D0D0;
+	border-bottom: 1px #D0D0D0 solid;
 }
 
 table.listing th.center {
@@ -84,7 +117,7 @@ table.listing th.center {
 
 table.listing td {
 	background-color: #FFF;
-	border: 0 solid #D0D0D0;
+	border: 0 #D0D0D0 solid;
 }
 
 table.listing tr.noline td {
@@ -111,6 +144,55 @@ table.listing tr.highlight td, td.highlight, table.calendar td.highlight {
 	background-color: #FEDF98 !important;
 }
 
+ul.listing {
+	border: #D0D0D0 solid;
+	border-width: 1px 1px 0;
+}
+
+ul.listing li {
+	margin: 0;
+	padding: 0.3em 0.5em;
+	list-style-type: none;
+	border-bottom: 1px #D0D0D0 solid;
+}
+
+ul.listing .listing-checkbox {
+	float: left;
+	margin-right: 0.5em;
+}
+
+ul.listing .listing-content {
+	float: left;
+}
+
+ul.listing .listing-button {
+	float: right;
+	display: block;
+	margin: 0.5em;
+	width: 28px;
+	height: 28px;
+	background-image: url(images/icons-28.png);
+	background-position: -28px 0;
+	text-indent: -9999px;
+}
+
+ul.listing .listing-button:hover {
+	background-position: -28px -28px;
+}
+
+ul.listing .listing-button.opened {
+	background-position: 0 0;
+}
+
+ul.listing .listing-button.opened:hover {
+	background-position: 0 -28px;
+}
+
+ul.listing ul.listing {
+	margin: 1em auto 0.5em;
+	width: 90%;
+}
+
 /*
  * Auflistung: Buttons
  */
@@ -131,6 +213,8 @@ div.calendar_top {
 	-moz-border-radius-topright: 1em;
 	border-top-left-radius: 1em;
 	border-top-right-radius: 1em;
+	border: #D0D0D0 solid;
+	border-width: 1px 1px 0;
 }
 
 div.calendar_top .prev, div.calendar_top .next {
@@ -140,10 +224,10 @@ div.calendar_top .prev, div.calendar_top .next {
 
 div.calendar_top a {
 	display: block;
-	height: 32px;
-	width: 32px;
+	height: 34px;
+	width: 34px;
 	background-repeat: no-repeat;
-	background-image: url(images/icons.png);
+	background-image: url(images/icons-34.png);
 }
 
 div.calendar_top .prev a {
@@ -151,16 +235,16 @@ div.calendar_top .prev a {
 }
 
 div.calendar_top .prev a:hover {
-	background-position: 0 -32px;
+	background-position: 0 -34px;
 }
 
 div.calendar_top .next a {
-	background-position: -32px 0;
+	background-position: -34px 0;
 	float: right;
 }
 
 div.calendar_top .next a:hover {
-	background-position: -32px -32px;
+	background-position: -34px -34px;
 }
 
 div.calendar_top .month {
@@ -175,6 +259,8 @@ div.calendar_top .month {
 div.calendar {
 	background-color: #FFF;
 	padding: 1em;
+	border: #D0D0D0 solid;
+	border-width: 0 1px 1px;
 }
 
 table.calendar {
@@ -215,13 +301,15 @@ table.calendar td.empty {
 .tabs .tabcontent {
 	padding: 1em;
 	background-color: #FFF;
+	border: 1px #D0D0D0 solid;
 }
 
 .tabs .tab {
 	float: left;
 	margin: 0;
-	padding: 0.5em 0.6em;
+	padding: 8px 9px 7px;
 	font-size: 1.2em;
+	margin-bottom: -1px;
 }
 
 .tab-selected {
@@ -232,23 +320,34 @@ table.calendar td.empty {
 	-moz-border-radius-topright: 0.5em;
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
+	border: #D0D0D0 solid;
+	border-width: 1px 1px 0;
+	padding: 7px 8px 7px !important;
 }
 
 /*
  * Links
  */
 a.add {
+	float: left;
 	display: block;
-	height: 32px;
-	background-repeat: no-repeat;
-	background-image: url(images/icons.png);
-	background-position: -64px 0;
-	line-height: 32px;
-	padding-left: 36px;
+	height: 28px;
+	line-height: 28px;
 }
 
-a.add:hover {
-	background-position: -64px -32px;
+a.add span {
+	display: block;
+	height: 28px;
+	width: 28px;
+	float: left;
+	background-repeat: no-repeat;
+	background-image: url(images/icons-28.png);
+	background-position: -84px 0;
+	margin-right: 3px;
+}
+
+a.add:hover span {
+	background-position: -84px -28px;
 }
 
 /*
@@ -351,6 +450,10 @@ div.errors p, div.message p {
 	background-image: url(images/black.png);
 }
 
+#black fieldset {
+	border: none;
+}
+
 #modal {
 	width: 500px;
 	margin: 10% auto 10%;
@@ -375,10 +478,4 @@ div.errors p, div.message p {
 #modal .bar-bottom {
 	border-top-width: 1px;
 	margin-top: 0.5em;
-}
-
-#modal legend {
-	padding: 5px 10px;
-	background-color: #000;
-	color: #FFF;
 }

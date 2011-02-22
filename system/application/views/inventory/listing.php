@@ -2,9 +2,12 @@
 <p>Auf dieser Seite kann Studioinventar hinzugefügt, bearbeitet, deaktiviert und gelöscht werden.</p>
 
 <?php if (empty($inventory)): ?>
-<div class="message">Es wurde bislang kein Inventar vorhanden.</div>
+<div class="message">Es ist bislang kein Inventar vorhanden.</div>
 <?php else: ?>
-<table class="listing sp-t">
+<div class="listing-buttons sp-t" style="margin-bottom: 0">
+	<a href="<?php echo base_url() ?>inventory/add" class="add modal-link"><span></span>Hinzufügen</a>
+</div>
+<table class="listing">
 	<thead>
 		<tr>
 			<th style="width: 45%">Inventar</th>
@@ -39,5 +42,5 @@
 </table>
 <?php endif ?>
 <div class="listing-buttons">
-	<a href="<?php echo base_url() ?>inventory/add" class="add modal-link"><span>Hinzufügen</span></a>
+	<a href="<?php echo base_url() ?>inventory/add" class="add modal-link"><span></span>Hinzufügen</a>
 </div>
