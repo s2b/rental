@@ -1,7 +1,7 @@
 <h2>Übersicht</h2>
-<p>Auf dieser Seite werden deine aktuellen Inventarbuchungen und Studio-Reservierungen sowie deren Bearbeitungsstand aufgelistet.</p>
+<p>Auf dieser Seite werden deine aktuellen <a href="#inventory">Inventarbuchungen</a> und <a href="#studio">Studio-Reservierungen</a> sowie deren Bearbeitungsstand aufgelistet.</p>
 
-<h3 class="sp-t">Deine Inventarbuchungen</h3>
+<h3 class="sp-t" id="inventory">Deine Inventarbuchungen</h3>
 <?php if (empty($inventory_bookings)): ?>
 <p>Aktuell gibt es keine offenen Inventarbuchungen.</p>
 <?php else: ?>
@@ -22,7 +22,7 @@
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->start)) ?></td>
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->end)) ?></td>
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->time)) ?></td>
-			<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-r"><?php echo $booking->status_text ?></td>
+			<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-l line-r line-b"><?php echo $booking->status_text ?></td>
 		</tr>
 		<tr>
 			<td colspan="4" class="line-l">
@@ -64,7 +64,7 @@
 </table>
 <?php endif; ?>
 
-<h3 class="sp-t">Deine Studio-Reservierungen</h3>
+<h3 class="sp-t" id="studio">Deine Studio-Reservierungen</h3>
 <?php if (empty($studio_bookings)): ?>
 <p>Aktuell gibt es keine offenen Studio-Reservierungen.</p>
 <?php else: ?>
@@ -85,7 +85,7 @@
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->start)) ?></td>
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->end)) ?></td>
 			<td><?php echo date('d.m.Y G:i', strtotime($booking->time)) ?></td>
-			<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-r"><?php echo $booking->status_text ?></td>
+			<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-l line-r line-b"><?php echo $booking->status_text ?></td>
 		</tr>
 		<tr>
 			<td colspan="4" class="line-l">
