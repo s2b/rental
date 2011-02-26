@@ -10,6 +10,7 @@
 <fieldset>
 	<legend><label for="description">Verwendungszweck</label></legend>
 	<input type="text" id="description" class="min" size="75" name="description" />
+	<?php echo form_error('description') ?>
 </fieldset>
 
 <fieldset>
@@ -18,7 +19,6 @@
 	<div id="calendar"><?php echo $calendar ?></div>
 	<div id="calendar-result">
 		<input type="hidden" name="start" />
-		<input type="hidden" name="end" />
 		<dl>
 			<dt><label for="start_hour"><?php echo ($is_inventory) ? 'Gewünschter Verleihtermin:' : 'Gewünschter Beginn:' ?></label></dt>
 			<dd id="calendar-start">
@@ -38,6 +38,7 @@
 				Uhr
 			</dd>
 		</dl>
+		<input type="hidden" name="end" />
 		<dl>
 			<dt><label for="end_hour"><?php echo ($is_inventory) ? 'Gewünschter Abgabetermin:' : 'Gewünschtes Ende:' ?></label></dt>
 			<dd id="calendar-end">
@@ -58,6 +59,8 @@
 			</dd>
 		</dl>
 	</div>
+	<?php echo form_error('start') ?>
+	<?php echo form_error('end') ?>
 </fieldset>
 
 <?php if ($is_inventory): ?>
@@ -114,6 +117,7 @@
 	<?php else: ?>
 	<p class="listing" data-tab="2">kein Inventar vorhanden</p>
 	<?php endif ?>
+	<?php echo form_error('inventory') ?>
 </fieldset>
 <?php else: ?>
 <fieldset>
@@ -134,11 +138,12 @@
 	<?php else: ?>
 	<p class="listing" data-tab="2">keine Räume vorhanden</p>
 	<?php endif ?>
+	<?php echo form_error('inventory') ?>
 </fieldset>
 <?php endif ?>
 
 <fieldset class="buttons">
-	<input type="submit" value="<?php echo ($is_inventory) ? 'Inventar anfragen' : 'Studio anfragen' ?>" />
+	<input type="submit" name="submit" value="<?php echo ($is_inventory) ? 'Inventar anfragen' : 'Studio anfragen' ?>" />
 </fieldset>
 </form>
 

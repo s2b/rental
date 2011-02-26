@@ -137,22 +137,26 @@ class Bookings_model extends MY_Model
 
 		return (!empty($result));
 	}
-
-	function add($start, $end, $desc, $is_room = false)
+	
+	function add($info, $inventory, $is_room = false)
 	{
-		$data = array(
-			'user_id' => $this->session->userdata('user_id'),
-			'booking_status' => BOOKING_NEW,
-			'booking_room' => (int) $is_room,
-			'booking_time' => date('Y-m-d H:i:s'),
-			'booking_start' => $start,
-			'booking_end' => $end,
-			'booking_desc' => $desc
-		);
-
-		$this->db->insert($this->table, $data);
-
-		return $this->db->insert_id();
+		$info['booking_id'] = null;
+		$info['user_id'] = $this->session->userdata('user_id');
+		$info['booking_status'] = BOOKING_NEW;
+		$info['booking_room'] = (int) $is_room;
+		$info['booking_time'] = date('Y-m-d H:i:s');
+		
+		$this->db->insert($this->table, $info);
+		$booking_id = $this->db->insert_id();
+		
+		foreach (array_keys($inventory) as $item)
+		{
+			$this->db->insert('bookings_inventory', array(
+				'booking_id' => $booking_id,
+				'inventory_id' => (int) $item));
+		}
+		
+		return $booking_id;
 	}
 
 	function delete($id)

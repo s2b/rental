@@ -27,6 +27,14 @@ class Booking extends Controller
 
 	function inventory()
 	{
+		if ($this->input->post('submit'))
+		{
+			if ($this->_add())
+			{
+				redirect('home#inventory');
+			}
+		}
+		
 		$bookings = $this->bookings_model->listing(false);
 		
 		$this->inventory_model->order = 'inventory_title asc';
@@ -56,6 +64,14 @@ class Booking extends Controller
 
 	function studio()
 	{
+		if ($this->input->post('submit'))
+		{
+			if ($this->_add(true))
+			{
+				redirect('home#studio');
+			}
+		}
+		
 		$bookings = $this->bookings_model->listing(true);
 		
 		$this->inventory_model->order = 'inventory_title asc';
@@ -77,6 +93,48 @@ class Booking extends Controller
 		$this->load->view('header');
 		$this->load->view('booking/booking.php', $data);
 		$this->load->view('footer');
+	}
+	
+	function _add($is_room = false)
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+		
+		$this->form_validation->set_rules('description', 'Verwendungszweck', 'required|min_length[3]|max_length[255]|xss_clean');
+		$this->form_validation->set_rules('start', 'Start-Datum', 'required|int');
+		$this->form_validation->set_rules('end', 'End-Datum', 'required|int');
+		$this->form_validation->set_rules('inventory', 'Inventar', 'required');
+
+		if (!$this->form_validation->run())
+		{
+			return false;
+		}
+		
+		$info = array();
+		$info['booking_desc'] = $this->input->post('description');
+		$info['booking_start'] = date('Y-m-d H:i:s', mktime(
+			(int) $this->input->post('start_hour'),
+			(int) $this->input->post('start_min'),
+			0,
+			date('n', (int) $this->input->post('start')),
+			date('j', (int) $this->input->post('start')),
+			date('Y', (int) $this->input->post('start'))
+		));
+		$info['booking_end'] = date('Y-m-d H:i:s', mktime(
+			(int) $this->input->post('end_hour'),
+			(int) $this->input->post('end_min'),
+			0,
+			date('n', (int) $this->input->post('end')),
+			date('j', (int) $this->input->post('end')),
+			date('Y', (int) $this->input->post('end'))
+		));
+		
+		$inventory = $this->input->post('inventory');
+		
+		$this->bookings_model->add($info, $inventory, $is_room);
+		
+		return true;
 	}
 	
 	function _calendar($page, $bookings)
