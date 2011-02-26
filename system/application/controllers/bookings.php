@@ -238,7 +238,7 @@ class Bookings extends Controller
 			$data = array(
 				'hidden_fields' => form_hidden('action[' . $booking_id . ']', BOOKING_DELETE),
 				'is_inventory' => ($this->uri->segment(2) == 'inventory'),
-				'form_url' => 'bookings/' . $this->uri->segment(2) . 'action/'
+				'form_url' => 'bookings/' . $this->uri->segment(2) . '/action/'
 			);
 
 			if ($this->ajax)
