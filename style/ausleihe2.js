@@ -8,6 +8,7 @@ if (typeof calendarLinks == 'undefined') {
  * Formulare vorbereiten bei onDomReady
  */
 $(document).ready(function () {
+	$('#no-js').hide();
 	prepareModal(true);
 	setupAutoSubmit();
 	prepareListing();

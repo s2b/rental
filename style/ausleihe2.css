@@ -12,6 +12,7 @@ body {
 	background-color: #EEE;
 	color: #4F5155;
 	font-family: 'Lucida Grande', 'Lucida Sans', sans-serif;
+	padding-bottom: 2em;
 }
 
 h1 {
@@ -434,6 +435,16 @@ div.errors p, div.message p {
 
 #content {
 	padding: 1em 1.5em 1.5em;
+}
+
+#no-js {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #FEFFDA;
+	padding: 0.5em;
+	border-top: 1px #BCBDA3 solid;
 }
 
 /*

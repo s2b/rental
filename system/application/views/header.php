@@ -13,6 +13,9 @@
 		<script type="text/javascript" src="<?php echo base_url() ?>style/ausleihe2.js"></script>
 	</head>
 	<body>
+	<div id="no-js">
+		Diese Seite funktioniert teilweise nur mit eingeschaltetem JavaScript!
+	</div>
 	<div id="navigation">
 		<div id="logo">
 			<h1><?php echo anchor('/home', 'Ausleihe') ?></h1>

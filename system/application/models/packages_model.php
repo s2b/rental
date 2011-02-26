@@ -59,6 +59,12 @@ class Packages_model extends MY_Model
 			}
 		}
 		$query->free_result();
+		
+		// Inventar korrekt sortieren
+		foreach (array_keys($packages) as $key)
+		{
+			$packages[$key]->inventory = array_reverse($packages[$key]->inventory, true);
+		}
 
 		return $packages;
 	}
