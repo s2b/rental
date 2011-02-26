@@ -233,8 +233,12 @@ class Calendar2
 			$week = array_fill(0, 7, false);
 			for ($weekday = $start; $weekday <= $count; $weekday++)
 			{
+				$full = sprintf('%04d-%02d-%02d', $this->year, $this->month, $day);
+				
 				$week[$weekday] = array(
 					'day' => $day,
+					'stamp' => strtotime($full . ' 0:00:00'),
+					'full' => $full,
 					'today' => ($day == $current),
 					'dates' => $this->dates[$day]);
 				$day++;

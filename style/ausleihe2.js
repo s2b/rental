@@ -20,24 +20,38 @@ $(document).ready(function () {
  */
 $.fn.Calendar = (function (options) {
 	var options = $.extend({
-		links: true,
-		clickAction: false
+		bookingLinks: true,
+		dateSelection: false
 	}, options);
 	
-	var $this = $(this);
+	var $calendar = $(this);
 	
-	$this.find('.calendar_top .prev a, .calendar_top .next a').click(function () {
-		$.post(this.href, 'ajax=true', function (data) {
-			if (typeof data != undefined && data.status != 0 && data.content) {
-				$this.empty().append(data.content).Calendar(options);
-			} else {
-				alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
-			}
-		}, 'json');
-		return false;
-	});
+	init = function () {
+		initHeader();
+		
+		if (options['bookingLinks']) {
+			bookingLinks();
+		}
+		
+		if (options['dateSelection']) {
+			dateSelection();
+		}
+	},
 	
-	if (options['links']) {
+	initHeader = function () {
+		$calendar.find('.calendar_top .prev a, .calendar_top .next a').click(function () {
+			$.post(this.href, 'ajax=true', function (data) {
+				if (typeof data != undefined && data.status != 0 && data.content) {
+					$calendar.empty().append(data.content).Calendar(options);
+				} else {
+					alert('Bei der Übertragung der Daten ist ein Fehler aufgetreten.');
+				}
+			}, 'json');
+			return false;
+		});
+	},
+	
+	bookingLinks = function () {
 		var $el = $('.booking-title');
 		if ($el.length > 0) {
 			$el.replaceWith(function () {
@@ -59,12 +73,96 @@ $.fn.Calendar = (function (options) {
 		}
 	
 		$('*[class*="booking-record-"]').removeClass('highlight');
-	}
+	},
 	
-	if (options['clickAction']) {
+	dateSelection = function () {
+		$calendar.find('td[class!=empty]').css('cursor', 'pointer').click(function () {
+			var $this = $(this);
+			    
+			if ($this.hasClass('selected')) {
+				return;
+			}
+			
+			$this.addClass('selected highlight');
+			
+			var html = '<select><option value="">-</option><option value="start">von</option><option value="end">bis</option></select>';
+			var $select = $(html).bind('click change', function (e) {
+				var $this = $(this),
+				    selected = $this.val(),
+				    date = $this.parent().attr('data-stamp');
+				
+				if (selected) {
+					$('#calendar-result').find('input[name=' + $this.val() + ']').attr({
+						value: date,
+						'data-full': $this.parent().attr('data-full')
+					});
+				} else {
+					$('#calendar-result').find('input').each(function () {
+						if ($(this).val() == date) {
+							$(this).attr({
+								value: '',
+								'data-full': ''
+							});
+						}
+					});
+				}
+				
+				$this.remove();
+				
+				dateSelectionRefresh();
+				
+				e.stopPropagation();
+			});
+			
+			$this.append($select);
+		});
+		dateSelectionRefresh();
+	},
 	
-	}
+	dateSelectionRefresh = function () {
+		var $parent = $('#calendar-result'),
+		    startDate = $parent.find('input[name=start]').val(),
+		    endDate = $parent.find('input[name=end]').val();
+		
+		var $days = $calendar.find('td[class!=empty]');
+		$days.removeClass('selected highlight').find('select').remove();
+				
+		if (startDate || endDate) {	
+			if (startDate && endDate && startDate > endDate) {
+				$days.find('select').remove();
+				
+				$parent.find('input').attr('value', '');
+				return;
+			}
+			
+			var firstDate = $days.first().attr('data-stamp'),
+			    highlight = ((!startDate || startDate < firstDate) && (!endDate || endDate > firstDate));
+			$days.each(function () {
+				var $this = $(this),
+				    date = $this.attr('data-stamp');
+				
+				if (date == endDate || date == startDate) {
+					highlight = (date != endDate);
+					$this.addClass('highlight');
+					return;
+				}
+				
+				if (highlight) {
+					$this.addClass('highlight');
+				}
+			});
+		}
+		
+		$parent.find('#calendar-start').find('span').replaceWith('<span>' + ($parent.find('input[name=start]').attr('data-full') || '') + '</span>');
+		$parent.find('#calendar-end').find('span').replaceWith('<span>' + ($parent.find('input[name=end]').attr('data-full') || '') + '</span>');
+	};
+	
+	init();
+	
+	return $calendar;
 });
+
+})(jQuery);
 
 /*
  * Modalen Dialog anzeigen
@@ -183,7 +281,7 @@ function prepareListing() {
 	});
 	
 	/* UL listings */
-	$(':checkbox').click(function (e) {
+	$('ul.listing > li').find(':checkbox').click(function (e) {
 		var $this = $(this);
 		$('input[name="' + $this.attr('name') + '"]').attr('checked', $this.attr('checked'));
 		
@@ -254,5 +352,3 @@ function prepareTabs() {
 
 	$tabs.append($tabbar).append($tabcontent);
 }
-
-})(jQuery);

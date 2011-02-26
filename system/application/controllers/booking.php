@@ -58,9 +58,13 @@ class Booking extends Controller
 	{
 		$bookings = $this->bookings_model->listing(true);
 		
+		$this->inventory_model->order = 'inventory_title asc';
+		$inventory = $this->inventory_model->listing(INVENTORY_ACTIVE, true);
+		
 		$data = array(
 			'calendar' => $this->_calendar('studio', $bookings),
 			'form_url' => 'booking/studio',
+			'inventory' => $inventory,
 			'is_inventory' => false
 		);
 		
