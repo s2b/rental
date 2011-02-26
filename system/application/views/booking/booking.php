@@ -86,7 +86,9 @@
 					<div class="clear"></div>
 				</li>
 				<?php endforeach ?>
+				<li class="marginalia"><a href="." class="select-all">alle auswählen</a> | <a href="." class="select-invert">Auswahl umkehren</a></li>
 			</ul>
+			
 		</li>
 		<?php endforeach ?>
 	</ul>
@@ -107,6 +109,7 @@
 			<div class="clear"></div>
 		</li>
 		<?php endforeach ?>
+		<li class="marginalia"><a href="." class="select-all">alle auswählen</a> | <a href="." class="select-invert">Auswahl umkehren</a></li>
 	</ul>
 	<?php else: ?>
 	<p class="listing" data-tab="2">kein Inventar vorhanden</p>

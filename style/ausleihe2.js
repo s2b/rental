@@ -1,14 +1,11 @@
 (function ($) {
 
-if (typeof calendarLinks == 'undefined') {
-	var calendarLinks = calendarLinks || true;
-}
-
 /*
  * Formulare vorbereiten bei onDomReady
  */
 $(document).ready(function () {
 	$('#no-js').hide();
+	
 	prepareModal(true);
 	setupAutoSubmit();
 	prepareListing();
@@ -302,6 +299,30 @@ function prepareListing() {
 				         .attr('checked', !$checkbox.attr('checked'));
 			});
 		}
+	});
+	
+	$('ul.listing .select-all').click(function () {
+		$(this).closest('ul.listing').find(':checkbox').not($(this)).each(function () {
+			$this = $(this);
+			if (!$this.attr('checked')) {
+				/* strange bugfix */
+				$this.attr('checked', !$this.attr('checked'))
+				     .click()
+				     .attr('checked', !$this.attr('checked'));
+			}
+		});
+		return false;
+	});
+	
+	$('ul.listing .select-invert').click(function () {
+		$(this).closest('ul.listing').find(':checkbox').not($(this)).each(function () {
+			$this = $(this);
+			/* strange bugfix */
+			$this.attr('checked', !$this.attr('checked'))
+			     .click()
+			     .attr('checked', !$this.attr('checked'));
+		});
+		return false;
 	});
 	
 	$('ul.listing.toggle').each(function () {
