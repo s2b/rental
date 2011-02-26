@@ -30,7 +30,7 @@
 				}
 			}
 			?>
-			<td class="<?php echo $classes ?>" data-stamp="<?php echo $day['stamp'] ?>" data-full="<?php echo $day['full'] ?>">
+			<td class="<?php echo $classes ?>" data-stamp="<?php echo $day['stamp'] ?>" data-full="<?php echo $day['full'] ?>" data-human="<?php echo $day['human'] ?>">
 				<div class="right"><strong><?php echo $day['day'] ?></strong></div>
 				<?php if (!empty($day['dates'])): ?>
 				<ul class="sem marginalia">

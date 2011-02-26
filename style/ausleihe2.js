@@ -94,14 +94,14 @@ $.fn.Calendar = (function (options) {
 				if (selected) {
 					$('#calendar-result').find('input[name=' + $this.val() + ']').attr({
 						value: date,
-						'data-full': $this.parent().attr('data-full')
+						'data-human': $this.parent().attr('data-human')
 					});
 				} else {
 					$('#calendar-result').find('input').each(function () {
 						if ($(this).val() == date) {
 							$(this).attr({
 								value: '',
-								'data-full': ''
+								'data-human': ''
 							});
 						}
 					});
@@ -153,8 +153,8 @@ $.fn.Calendar = (function (options) {
 			});
 		}
 		
-		$parent.find('#calendar-start').find('span').replaceWith('<span>' + ($parent.find('input[name=start]').attr('data-full') || '') + '</span>');
-		$parent.find('#calendar-end').find('span').replaceWith('<span>' + ($parent.find('input[name=end]').attr('data-full') || '') + '</span>');
+		$parent.find('#calendar-start').find('span').replaceWith('<span>' + ($parent.find('input[name=start]').attr('data-human') || '') + '</span>');
+		$parent.find('#calendar-end').find('span').replaceWith('<span>' + ($parent.find('input[name=end]').attr('data-human') || '') + '</span>');
 	};
 	
 	init();

@@ -8,6 +8,7 @@ class Calendar2
 	var $month_display = 1;
 	var $show_next_prev = true;
 	var $next_prev_url = '';
+	var $human_date_format = 'D, d.m.Y';
 
 	var $month;
 	var $year;
@@ -73,6 +74,11 @@ class Calendar2
 		if (isset($config['view']))
 		{
 			$this->view = $config['view'];
+		}
+		
+		if (isset($config['human_date_format']))
+		{
+			$this->human_date_format = $config['human_date_format'];
 		}
 
 		if (isset($config['weekday_display']))
@@ -234,11 +240,14 @@ class Calendar2
 			for ($weekday = $start; $weekday <= $count; $weekday++)
 			{
 				$full = sprintf('%04d-%02d-%02d', $this->year, $this->month, $day);
+				$stamp = strtotime($full . ' 0:00:00');
+				$human = date($this->human_date_format, $stamp);
 				
 				$week[$weekday] = array(
 					'day' => $day,
-					'stamp' => strtotime($full . ' 0:00:00'),
+					'stamp' => $stamp,
 					'full' => $full,
+					'human' => $human,
 					'today' => ($day == $current),
 					'dates' => $this->dates[$day]);
 				$day++;
