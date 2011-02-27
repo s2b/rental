@@ -141,7 +141,7 @@ table.listing td.line-b, table.listing tr.noline td.line-b {
 	border-bottom-width: 1px;
 }
 
-table.listing tr.highlight td, td.highlight, table.calendar td.highlight {
+table.listing tr.highlight td, td.highlight, table.calendar td.highlight, li.highlight {
 	background-color: #FEDF98 !important;
 }
 
@@ -285,6 +285,15 @@ table.calendar td.today {
 
 table.calendar td.empty {
 	background-color: transparent;
+}
+
+table.calendar .booking-box {
+	border: 1px #D0D0D0 solid;
+	padding: 0.2em 0.4em;
+	margin: 0.2em -0.2em;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 /*

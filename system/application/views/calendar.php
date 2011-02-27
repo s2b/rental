@@ -20,22 +20,12 @@
 			<?php if (!$day): ?>
 			<td class="empty"></td>
 			<?php else: ?>
-			<?php
-			$classes = ($day['today']) ? 'today' : '';
-			if (!empty($day['dates']))
-			{
-				foreach ($day['dates'] as $date)
-				{
-					$classes .= ' booking-record-' . $date['data']['id'];
-				}
-			}
-			?>
-			<td class="<?php echo $classes ?>" data-stamp="<?php echo $day['stamp'] ?>" data-full="<?php echo $day['full'] ?>" data-human="<?php echo $day['human'] ?>">
+			<td<?php echo ($day['today']) ? ' class="today"' : '' ?> data-stamp="<?php echo $day['stamp'] ?>" data-full="<?php echo $day['full'] ?>" data-human="<?php echo $day['human'] ?>">
 				<div class="right"><strong><?php echo $day['day'] ?></strong></div>
 				<?php if (!empty($day['dates'])): ?>
 				<ul class="sem marginalia">
 					<?php foreach ($day['dates'] as $date): ?>
-					<li>
+					<li class="booking-box booking-record-<?php echo $date['data']['id'] ?>">
 						<span class="booking-title" data-id="<?php echo $date['data']['id'] ?>" data-tab="<?php echo $date['data']['status'] ?>">
 							<?php echo (($date['timeframe']) ? $date['timeframe'] . ': ' : '') . $date['desc'] ?>
 						</span>
