@@ -25,7 +25,7 @@
 			</td>
 			<td><?php echo $this->user_model->semester($user->semester_id) ?></td>
 			<td><?php echo date('d.m.Y G:i', strtotime($user->reg_date)) ?></td>
-			<td><?php echo date('d.m.Y G:i', strtotime($user->last_visit)) ?></td>
+			<td><?php echo (!empty($user->last_visit)) ? date('d.m.Y G:i', strtotime($user->last_visit)) : '-' ?></td>
 			<td class="middle center">
 				<a href="<?php echo base_url() . 'users/role/' . $user->id ?>" class="edit-link"><?php echo $user->role_text ?></a>
 			</td>
