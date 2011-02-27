@@ -223,7 +223,7 @@ class Calendar2
 		$day = 1;
 
 		$calendar = array();
-		while ($day < $month_days)
+		while ($day <= $month_days)
 		{
 			if ($first_day)
 			{
@@ -241,7 +241,7 @@ class Calendar2
 			{
 				$full = sprintf('%04d-%02d-%02d', $this->year, $this->month, $day);
 				$stamp = strtotime($full . ' 0:00:00');
-				$human = date($this->human_date_format, $stamp);
+				$human = $this->human_date($stamp);
 				
 				$week[$weekday] = array(
 					'day' => $day,
@@ -305,6 +305,21 @@ class Calendar2
 		}
 
 		return $weekday;
+	}
+	
+	function human_date($timestamp)
+	{
+		$human = date($this->human_date_format, $timestamp);
+		
+		if (strpos($this->human_date_format, 'D') !== false)
+		{
+			$day = date('D', $timestamp);
+			$index = array_search($day, array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'));
+			
+			$human = str_replace($day, $this->lang('weekday', $index), $human);
+		}
+		
+		return $human;
 	}
 }
 
