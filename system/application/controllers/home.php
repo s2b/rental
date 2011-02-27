@@ -104,7 +104,7 @@ class Home extends Controller
 	function lostpassword()
 	{
 		$this->load->view('header');
-
+		$this->load->view('home/lostpassword');
 		$this->load->view('footer');
 	}
 	
