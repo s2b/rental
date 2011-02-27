@@ -62,6 +62,18 @@ class User_model extends MY_Model
 
 		return (!empty($result));
 	}
+	
+	function check_email($email)
+	{
+		$this->db->select('user_id');
+		$this->db->where('user_email', $email);
+		$query = $this->db->get($this->table);
+
+		$result = $query->result();
+		$query->free_result();
+
+		return (!empty($result));
+	}
 
 	function get($id)
 	{

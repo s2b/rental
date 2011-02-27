@@ -13,6 +13,7 @@
 				<dd><input type="password" name="password" id="password" value="" /></dd>
 			</dl>
 
+			<div class="l" style="margin-top: 1em"><a href="<?php echo base_url() ?>home/lostpassword">Passwort vergessen</a> | <a href="<?php echo base_url() ?>home/register">Registrieren</a></div>
 			<div class="right"><input type="submit" value="Einloggen" /></div>
 		</fieldset>
 	</form>
