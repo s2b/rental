@@ -83,7 +83,7 @@ $.fn.Calendar = (function (options) {
 			$this.addClass('selected highlight');
 			
 			var html = '<select><option value="">-</option><option value="start">von</option><option value="end">bis</option></select>';
-			var $select = $(html).bind('click change', function (e) {
+			var $select = $(html).change(function (e) {
 				var $this = $(this),
 				    selected = $this.val(),
 				    date = $this.parent().attr('data-stamp');
@@ -108,7 +108,7 @@ $.fn.Calendar = (function (options) {
 				
 				dateSelectionRefresh();
 				
-				e.stopPropagation();
+				//e.stopPropagation();
 			});
 			
 			$this.append($select);
