@@ -105,17 +105,8 @@ class Inventory extends Controller
 					$this->inventory_model->edit($this->uri->segment(3), $data);
 				}
 
-				if ($this->ajax)
-				{
-					// Wird per AJAX aufgerufen => JSON zurückgeben
-					echo json_encode(array('status' => 1));
-					return;
-				}
-				else
-				{
-					// Weiterleiten zur Auflistung
-					redirect('inventory');
-				}
+				// Weiterleiten zur Auflistung
+				redirect('inventory');
 			}
 		}
 		else if ($this->input->post('cancel'))
@@ -155,16 +146,8 @@ class Inventory extends Controller
 			// Inventar aus der Datenbank löschen
 			$this->inventory_model->delete($this->uri->segment(3));
 
-			if ($this->ajax)
-			{
-				// Wird per AJAX aufgerufen => JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
-			else
-			{
-				// Weiterleiten zur Auflistung
-				redirect('inventory');
-			}
+			// Weiterleiten zur Auflistung
+			redirect('inventory');
 		}
 		else if ($this->input->post('cancel'))
 		{

@@ -180,16 +180,6 @@ function prepareModal(isForm) {
 	if (isForm) {
 		// Fokus auf erstes Formularfeld setzen
 		elModal.find(':input:visible:enabled:first').focus();
-
-		// Formularvalidierung per AJAX im Dialog (z. B. beim Login)
-		elModal.parents('form').submit(function () {
-			return $.post(this.action, $(this).serialize() + '&ajax=true', function (data) {
-				if (typeof data != undefined && data.status == 0) {
-					$('#modal .errors').empty().append(data.content);
-					return false;
-				}
-			}, 'json');
-		});
 	}
 
 	// Abbrechen per JavaScript

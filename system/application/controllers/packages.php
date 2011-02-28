@@ -112,17 +112,8 @@ class Packages extends Controller
 					$this->packages_model->edit($this->uri->segment(3), $data);
 				}
 
-				if ($this->ajax)
-				{
-					// Wird per AJAX aufgerufen => JSON zurückgeben
-					echo json_encode(array('status' => 1));
-					return;
-				}
-				else
-				{
-					// Weiterleiten zur Auflistung
-					redirect('packages');
-				}
+				// Weiterleiten zur Auflistung
+				redirect('packages');
 			}
 		}
 		else if ($this->input->post('cancel'))
@@ -163,16 +154,8 @@ class Packages extends Controller
 			// Paket aus der Datenbank löschen
 			$this->packages_model->delete($this->uri->segment(3));
 
-			if ($this->ajax)
-			{
-				// Wird per AJAX aufgerufen => JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
-			else
-			{
-				// Weiterleiten zur Auflistung
-				redirect('packages');
-			}
+			// Weiterleiten zur Auflistung
+			redirect('packages');
 		}
 		else if ($this->input->post('cancel'))
 		{

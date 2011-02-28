@@ -221,16 +221,8 @@ class Bookings extends Controller
 			// Buchung aus der Datenbank löschen
 			$this->bookings_model->delete($booking_id);
 
-			if ($this->ajax)
-			{
-				// Wird per AJAX aufgerufen => JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
-			else
-			{
-				// Weiterleiten zur Auflistung
-				redirect('bookings/' . $this->uri->segment(2));
-			}
+			// Weiterleiten zur Auflistung
+			redirect('bookings/' . $this->uri->segment(2));
 		}
 		else
 		{
@@ -269,16 +261,8 @@ class Bookings extends Controller
 			// Buchungsstatus in der Datenbank aktualisieren
 			$this->bookings_model->updateStatus($booking_id, $booking_status, $booking_desc);
 
-			if ($this->ajax)
-			{
-				// Wird per AJAX aufgerufen => JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
-			else
-			{
-				// Weiterleiten zur Auflistung
-				redirect('bookings/' . $this->uri->segment(2));
-			}
+			// Weiterleiten zur Auflistung
+			redirect('bookings/' . $this->uri->segment(2));
 		}
 		else
 		{

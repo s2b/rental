@@ -103,24 +103,8 @@ class Users extends Controller
 					'semester_id' => $this->input->post('semester')
 				));
 
-				if ($this->input->post('reset_password'))
-				{
-					/**
-					 * @todo Reset password
-					 */
-				}
-
-				if ($this->ajax)
-				{
-					// Wird per AJAX aufgerufen => JSON zurückgeben
-					echo json_encode(array('status' => 1));
-					return;
-				}
-				else
-				{
-					// Weiterleiten zur Auflistung
-					redirect('users');
-				}
+				// Weiterleiten zur Auflistung
+				redirect('users');
 			}
 		}
 		else if ($this->input->post('cancel'))
@@ -160,16 +144,8 @@ class Users extends Controller
 			// Benutzer aus der Datenbank löschen
 			$this->user_model->delete($this->uri->segment(3));
 
-			if ($this->ajax)
-			{
-				// Wird per AJAX aufgerufen => JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
-			else
-			{
-				// Weiterleiten zur Auflistung
-				redirect('users');
-			}
+			// Weiterleiten zur Auflistung
+			redirect('users');
 		}
 		else if ($this->input->post('cancel'))
 		{
