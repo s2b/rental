@@ -127,6 +127,11 @@ class User_model extends MY_Model
 		{
 			$info['user_reg_date'] = date('Y-m-d H:i:s');
 		}
+		
+		if (isset($info['user_password']))
+		{
+			$info['user_password'] = sha1($info['user_password']);
+		}
 
 		$info['user_id'] = null;
 		$info['user_status'] = USER_INACTIVE;
@@ -165,9 +170,14 @@ class User_model extends MY_Model
 
 		return $role;
 	}
-
+	
 	function edit($id, $info)
 	{
+		if (isset($info['user_password']))
+		{
+			$info['user_password'] = sha1($info['user_password']);
+		}
+	
 		$this->db->where('user_id', $id);
 		$this->db->update($this->table, $info);
 	}
@@ -176,6 +186,44 @@ class User_model extends MY_Model
 	{
 		$this->db->where('user_id', $id);
 		$this->db->delete($this->table);
+	}
+	
+	function forgot_password($email)
+	{
+		$this->load->helper('string');
+		$token = random_string('alnum', 40);
+		
+		$this->db->where('user_email', $email);
+		$this->db->update($this->table, array(
+			'user_token_expire' => date('Y-m-d H:i:s', time() + 3600),
+			'user_token' => $token
+		));
+		
+		return $token;
+	}
+	
+	function check_token($email, $token)
+	{
+		$this->db->where('user_email', $email);
+		$this->db->where('user_token', $token);
+		$this->db->where('user_token_expire >', date('Y-m-d H:i:s'));
+		$this->db->select('user_id');
+		$query = $this->db->get($this->table);
+		
+		$result = $query->result();
+		$query->free_result();
+
+		return (!empty($result));
+	}
+	
+	function reset_password($email, $password)
+	{
+		$this->db->where('user_email', $email);
+		$this->db->update($this->table, array(
+			'user_password' => sha1($password),
+			'user_token' => null,
+			'user_token_expire' => null
+		));
 	}
 }
 

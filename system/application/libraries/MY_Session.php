@@ -37,7 +37,7 @@ class MY_Session extends CI_Session
 		$this->logged_in = true;
 
 		$this->CI->db->where('user_id', $this->userdata['user_id']);
-		$this->CI->db->update($this->user_table_name, array('user_last_visit' => date('Y-m-d H:i:s')));
+		$this->CI->db->update($this->user_table_name, array('user_last_visit' => date('Y-m-d H:i:s'), 'user_token' => null, 'user_token_expire' => null));
 
 		return true;
 	}

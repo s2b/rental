@@ -36,14 +36,14 @@ class Home extends Controller
 	 */
 	function login()
 	{
+		// bereits eingeloggt?
+		if ($this->session->logged_in)
+		{
+			redirect('home');
+		}
+		
 		if (!$this->ajax)
 		{
-			// bereits eingeloggt?
-			if ($this->session->logged_in)
-			{
-				redirect('/home/');
-			}
-
 			$this->load->view('header');
 		}
 
@@ -57,28 +57,12 @@ class Home extends Controller
 		// Formular validieren
 		if ($this->form_validation->run())
 		{
-			if (!$this->ajax)
-			{
-				// zur Übersicht weiterleiten
-				redirect('/home/');
-			}
-			else
-			{
-				// Erfolg per JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
+			// zur Übersicht weiterleiten
+			redirect('/home/');
 		}
 
-		if (!$this->ajax)
-		{
-			$this->load->view('home/login');
-			$this->load->view('footer');
-		}
-		else
-		{
-			// Aufruf per AJAX => Validierungsfehler im JSON-Objekt zurückgeben
-			echo json_encode(array('status' => 0, 'content' => validation_errors()));
-		}
+		$this->load->view('home/login');
+		$this->load->view('footer');
 	}
 
 	/**
@@ -103,8 +87,83 @@ class Home extends Controller
 	 */
 	function lostpassword()
 	{
+		// bereits eingeloggt?
+		if ($this->session->logged_in)
+		{
+			redirect('home');
+		}
+		
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('email', 'E-Mailadresse', 'required|valid_email|callback__forgot_email_check');
+		
+		if ($this->form_validation->run())
+		{
+			$email = $this->input->post('email');
+			$token = $this->user_model->forgot_password($email);
+			
+			$link = base_url() . 'home/resetpassword?email=' . $email . '&token=' . $token;
+			
+			/**
+			 * @ToDo E-Mail schicken
+			 */
+			
+			$this->load->view('header');
+			$this->load->view('home/lostpassword_success');				
+			$this->load->view('footer');
+
+			return;
+		}
+		
 		$this->load->view('header');
-		$this->load->view('home/lostpassword');
+		$this->load->view('home/lostpassword_form');
+		$this->load->view('footer');
+	}
+	
+	/**
+	 * Passwort zurücksetzen
+	 */
+	function resetpassword()
+	{
+		// bereits eingeloggt?
+		if ($this->session->logged_in)
+		{
+			redirect('home');
+		}
+		
+		$email = (string) $this->input->get_post('email', true);
+		$token = (string) $this->input->get_post('token');
+		
+		if (!$this->user_model->check_token($email, $token))
+		{
+			return;
+		}
+		
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('password', 'Passwort', 'required|min_length[4]|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', 'Passwort (Bestätigung)', 'required');
+		
+		if ($this->form_validation->run())
+		{
+			$password = $this->input->post('password');
+			
+			$token = $this->user_model->reset_password($email, $password);
+			
+			$this->load->view('header');
+			$this->load->view('home/resetpassword_success');
+			$this->load->view('footer');
+			
+			return;
+		}
+
+		$data = array(
+			'email' => $email,
+			'hidden' => array('email' => $email, 'token' => $token)
+		);
+		
+		$this->load->view('header');
+		$this->load->view('home/resetpassword_form', $data);
 		$this->load->view('footer');
 	}
 	
@@ -113,22 +172,19 @@ class Home extends Controller
 	 */
 	function register()
 	{
-		if (!$this->ajax)
+		// bereits eingeloggt?
+		if ($this->session->logged_in)
 		{
-			// bereits eingeloggt?
-			if ($this->session->logged_in)
-			{
-				redirect('/home/');
-			}
-
-			$this->load->view('header');
+			redirect('/home/');
 		}
+
+		$this->load->view('header');
 
 		// Formularvalidierung vorbereiten
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('name', 'Name', 'required|min_length[3]|max_length[50]|xss_clean');
-		$this->form_validation->set_rules('email', 'E-Mailadresse', 'required|valid_email|callback__user_email_check');
+		$this->form_validation->set_rules('email', 'E-Mailadresse', 'required|valid_email|callback__register_email_check');
 		$this->form_validation->set_rules('student_id', 'Matrikelnummer', 'required|exact_length[6]|integer');
 		$this->form_validation->set_rules('semester', 'Semester', 'required|callback__semester_check');
 		$this->form_validation->set_rules('password', 'Passwort', 'required|min_length[4]|matches[password_confirm]');
@@ -137,45 +193,30 @@ class Home extends Controller
 		// Formular validieren
 		if ($this->form_validation->run())
 		{
-			if (!$this->ajax)
-			{
-				$info = array(
-					'user_name' => $this->input->post('name'),
-					'user_email' => $this->input->post('email'),
-					'user_password' => sha1($this->input->post('password')),
-					'user_student_id' => $this->input->post('student_id'),
-					'semester_id' => $this->input->post('semester'));
-				
-				// Benutzer hinzufügen
-				$this->load->model('user_model');
-				$this->user_model->add($info);
+			$info = array(
+				'user_name' => $this->input->post('name'),
+				'user_email' => $this->input->post('email'),
+				'user_password' => $this->input->post('password'),
+				'user_student_id' => $this->input->post('student_id'),
+				'semester_id' => $this->input->post('semester'));
 			
-				// Nachricht anzeigen
-				$this->load->view('home/register_success');
-				$this->load->view('footer');
-			}
-			else
-			{
-				// Erfolg per JSON zurückgeben
-				echo json_encode(array('status' => 1));
-			}
+			// Benutzer hinzufügen
+			$this->load->model('user_model');
+			$this->user_model->add($info);
+		
+			// Nachricht anzeigen
+			$this->load->view('home/register_success');
+			$this->load->view('footer');
+
 			return;
 		}
 
-		if (!$this->ajax)
-		{
-			$data = array(
-				'semesters' => $this->user_model->semester()
-			);
-			
-			$this->load->view('home/register', $data);
-			$this->load->view('footer');
-		}
-		else
-		{
-			// Aufruf per AJAX => Validierungsfehler im JSON-Objekt zurückgeben
-			echo json_encode(array('status' => 0, 'content' => validation_errors()));
-		}
+		$data = array(
+			'semesters' => $this->user_model->semester()
+		);
+		
+		$this->load->view('home/register_form', $data);
+		$this->load->view('footer');
 	}
 	
 	function _semester_check($value)
@@ -191,7 +232,7 @@ class Home extends Controller
 		}
 	}
 	
-	function _user_email_check($value)
+	function _register_email_check($value)
 	{
 		if (!$this->user_model->check_email($value))
 		{
@@ -199,8 +240,21 @@ class Home extends Controller
 		}
 		else
 		{
-			$this->form_validation->set_message('_user_email_check', 'Die eingegebene E-Mailadresse ist bereits registriert.');
+			$this->form_validation->set_message('_register_email_check', 'Die eingegebene E-Mailadresse ist bereits registriert.');
 			return false;
+		}
+	}
+	
+	function _forgot_email_check($value)
+	{
+		if (!$this->user_model->check_email($value))
+		{
+			$this->form_validation->set_message('_forgot_email_check', 'Die eingegebene E-Mailadresse ist nicht registriert.');
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 

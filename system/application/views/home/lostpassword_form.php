@@ -1,4 +1,5 @@
 <div id="black">
+	<?php echo form_open('home/lostpassword') ?>
 	<fieldset id="modal">
 		<legend>Passwort vergessen</legend>
 		<div class="errors"><?php echo validation_errors(); ?></div>
@@ -11,4 +12,5 @@
 		<div class="l" style="margin-top: 1em"><a href="<?php echo base_url() ?>home/login">zurück zum Login</a></div>
 		<div class="right"><input type="submit" value="Passwort zuschicken" /></div>
 	</fieldset>
+	</form>
 </div>

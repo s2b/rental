@@ -35,11 +35,6 @@
 				</select>
 			</dd>
 		</dl>
-		<hr />
-		<dl>
-			<dt><label for="reset_password">Passwort zurücksetzen</label></dt>
-			<dd><input type="checkbox" name="reset_password" id="reset_password" value="1" /></dd>
-		</dl>
 
 		<div class="right">
 			<input type="submit" name="cancel" value="Abbrechen" />
