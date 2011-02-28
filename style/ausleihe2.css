@@ -208,14 +208,14 @@ div.calendar_top {
 	margin-top: 2em;
 	padding: 0.7em 0.5em 0;
 	background-color: #FFF;
+	border: #D0D0D0 solid;
+	border-width: 1px 1px 0;
 	-webkit-border-top-left-radius: 1em;
 	-webkit-border-top-right-radius: 1em;
 	-moz-border-radius-topleft: 1em;
 	-moz-border-radius-topright: 1em;
 	border-top-left-radius: 1em;
 	border-top-right-radius: 1em;
-	border: #D0D0D0 solid;
-	border-width: 1px 1px 0;
 }
 
 div.calendar_top .prev, div.calendar_top .next {
