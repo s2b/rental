@@ -7,21 +7,21 @@
 			<dt><label for="name">Name:</label></dt>
 			<dd>
 				<?php echo form_error('name') ?>
-				<input type="text" name="name" id="name" value="<?php echo set_value('name', $user->name) ?>" />
+				<input type="text" name="name" id="name" size="30" value="<?php echo set_value('name', $user->name) ?>" />
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="email">E-Mailadresse:</label></dt>
 			<dd>
 				<?php echo form_error('email') ?>
-				<input type="email" name="email" id="email" value="<?php echo set_value('email', $user->email) ?>" />
+				<input type="email" name="email" id="email" size="30" value="<?php echo set_value('email', $user->email) ?>" />
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="student_id">Matrikelnummer:</label></dt>
 			<dd>
 				<?php echo form_error('student_id') ?>
-				<input type="text" name="student_id" id="student_id" value="<?php echo set_value('student_id', $user->student_id) ?>" />
+				<input type="text" name="student_id" id="student_id" size="10" value="<?php echo set_value('student_id', $user->student_id) ?>" />
 			</dd>
 		</dl>
 		<dl>

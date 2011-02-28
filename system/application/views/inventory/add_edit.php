@@ -11,14 +11,14 @@
 			<dt><label for="title">Titel:</label></dt>
 			<dd>
 				<?php echo form_error('title') ?>
-				<input type="text" name="title" id="title" value="<?php echo set_value('title', $inv->title) ?>" />
+				<input type="text" name="title" id="title" size="30" value="<?php echo set_value('title', $inv->title) ?>" />
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="desc">Beschreibung:</label></dt>
 			<dd>
 				<?php echo form_error('desc') ?>
-				<input type="text" name="desc" id="desc" value="<?php echo set_value('desc', $inv->desc) ?>" />
+				<input type="text" name="desc" id="desc" size="30" value="<?php echo set_value('desc', $inv->desc) ?>" />
 			</dd>
 		</dl>
 

@@ -36,7 +36,7 @@ $.fn.Calendar = (function (options) {
 	},
 	
 	initHeader = function () {
-		$calendar.find('.calendar_top .prev a, .calendar_top .next a').click(function () {
+		$calendar.find('.calendar-top .prev a, .calendar-top .next a').click(function () {
 			$.post(this.href, 'ajax=true', function (data) {
 				if (typeof data != undefined && data.status != 0 && data.content) {
 					$calendar.empty().append(data.content).Calendar(options);

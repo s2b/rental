@@ -6,15 +6,15 @@
 
 			<dl>
 				<dt><label for="text">Name:</label></dt>
-				<dd><input type="text" name="name" id="name" value="<?php echo set_value('name') ?>" /></dd>
+				<dd><input type="text" name="name" id="name" size="30" value="<?php echo set_value('name') ?>" /></dd>
 			</dl>
 			<dl>
 				<dt><label for="email">E-Mail:</label></dt>
-				<dd><input type="email" name="email" id="email" value="<?php echo set_value('email') ?>" /></dd>
+				<dd><input type="email" name="email" id="email" size="30" value="<?php echo set_value('email') ?>" /></dd>
 			</dl>
 			<dl>
 				<dt><label for="student_id">Matrikelnummer:</label></dt>
-				<dd><input type="text" name="student_id" id="student_id" value="<?php echo set_value('student_id') ?>" /></dd>
+				<dd><input type="text" name="student_id" id="student_id" size="10" value="<?php echo set_value('student_id') ?>" /></dd>
 			</dl>
 			<dl>
 				<dt><label for="semester">Anfangssemester:</label></dt>
@@ -28,11 +28,11 @@
 			</dl>
 			<dl>
 				<dt><label for="password">Passwort:</label></dt>
-				<dd><input type="password" name="password" id="password" value="" /></dd>
+				<dd><input type="password" name="password" id="password" size="30" value="" /></dd>
 			</dl>
 			<dl>
 				<dt><label for="password_confirm">Passwort (Bestätigung):</label></dt>
-				<dd><input type="password" name="password_confirm" id="password_confirm" value="" /></dd>
+				<dd><input type="password" name="password_confirm" id="password_confirm" size="30" value="" /></dd>
 			</dl>
 
 			<div class="l" style="margin-top: 1em"><a href="<?php echo base_url() ?>home/login">zurück zum Login</a></div>

@@ -301,12 +301,12 @@ table.calendar .booking-box {
  * Tabs
  */
 .tabs {
-	margin-top: 2em;
-
+	padding-top: 2em;
+	
 }
 
 .tabs .tabbar {
-
+	margin: 0;
 }
 
 .tabs .tabcontent {
