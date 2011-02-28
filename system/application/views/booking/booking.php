@@ -18,12 +18,11 @@
 	<p>Zeitraum durch Klicken in den Kalender festlegen, anschließend gewünschte Uhrzeiten angeben:</p>
 	<div id="calendar"><?php echo $calendar ?></div>
 	<div id="calendar-result">
-		<input type="hidden" name="start" />
 		<dl>
 			<dt><label for="start_hour"><?php echo ($is_inventory) ? 'Gewünschter Verleihtermin:' : 'Gewünschter Beginn:' ?></label></dt>
 			<dd id="calendar-start">
-				<span></span>
-				um
+				<input type="text" name="start" class="nojs" title="UNIX-Timestamp (0 Uhr)" />
+				<span></span>&nbsp;um
 				<select name="start_hour" id="start_hour">
 					<?php for ($i = 8; $i < 22; $i++): ?>
 					<option><?php echo $i ?></option>
@@ -38,12 +37,11 @@
 				Uhr
 			</dd>
 		</dl>
-		<input type="hidden" name="end" />
 		<dl>
 			<dt><label for="end_hour"><?php echo ($is_inventory) ? 'Gewünschter Abgabetermin:' : 'Gewünschtes Ende:' ?></label></dt>
 			<dd id="calendar-end">
-				<span></span>
-				um
+				<input type="text" name="end" class="nojs" title="UNIX-Timestamp (0 Uhr)" />
+				<span></span>&nbsp;um
 				<select name="end_hour" id="end_hour">
 					<?php for ($i = 8; $i < 22; $i++): ?>
 					<option><?php echo $i ?></option>

@@ -4,7 +4,8 @@
  * Formulare vorbereiten bei onDomReady
  */
 $(document).ready(function () {
-	$('#no-js').hide();
+	$('#no-js').remove();
+	$('.nojs').hide();
 	
 	prepareModal(true);
 	setupAutoSubmit();

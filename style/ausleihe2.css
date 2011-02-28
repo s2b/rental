@@ -458,10 +458,6 @@ div.errors p, div.message p {
 	z-index: 1;
 }
 
-#no-ie6 {
-	z-index: 2;
-}
-
 /*
  * Modales Fenster
  */

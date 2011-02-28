@@ -9,13 +9,9 @@
 	</head>
 	<body>
 	<div id="no-js">
-		Diese Seite funktioniert teilweise nur mit eingeschaltetem JavaScript!
+		Diese Seite funktioniert teilweise nur mit aktiviertem JavaScript!
 	</div>
-	<!--[if lt IE 7]>
-	<div id="no-ie6">
-		Diese Seite funktioniert erst mit Internet Explorer > 6
-	</div>
-	<![endif]-->
+	<!--[if lt IE 7]><div id="no-ie6">Diese Seite ist nicht mit deinem Internet-Browser (Internet Explorer 6) kompatibel. Bitte aktualisiere deinen Browser.</div><![endif]-->
 	<div id="navigation">
 		<div id="logo">
 			<h1><?php echo anchor('/home', 'Ausleihe') ?></h1>
