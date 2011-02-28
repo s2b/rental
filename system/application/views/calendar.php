@@ -1,6 +1,6 @@
 <?php if ($show_next_prev): ?>
-<div class="calendar_top">
-	<div class="prev"><a href="<?php echo $prev_url ?>"><span class="reader">vorheriger</a></div>
+<div class="calendar-top">
+	<div class="prev"><a href="<?php echo $prev_url ?>"><span class="reader">vorheriger</span></a></div>
 	<h3 class="month"><?php echo $month . ' ' . $year ?></h3>
 	<div class="next"><a href="<?php echo $next_url ?>"><span class="reader">nächster</span></a></div>
 	<div class="clear"></div>

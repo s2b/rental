@@ -53,7 +53,7 @@ $.fn.Calendar = (function (options) {
 		if ($el.length > 0) {
 			$el.replaceWith(function () {
 				$t = $(this);
-				return $('<a href="." title="Termin hervorheben" data-id="' + $t.attr('data-id') + '" data-tab="' + $t.attr('data-tab') + '">' + $t.text() + '</a>').click(function () {
+				return $('<a title="Termin hervorheben" data-id="' + $t.attr('data-id') + '" data-tab="' + $t.attr('data-tab') + '">' + $t.text() + '</a>').click(function () {
 					$t = $(this);
 
 					$('.tab[data-tab="' + $t.attr('data-tab') + '"] a').click();
@@ -231,7 +231,7 @@ function prepareListing() {
 	/* Table listings */
 	var el = $('.listing-action');
 	if (el.length > 0) {
-		var el2 = $('<a href="." />').click(function () {
+		var el2 = $('<a />').click(function () {
 			$(this).hide().siblings('select').show();
 			return false;
 		});
@@ -316,7 +316,7 @@ function prepareListing() {
 	});
 	
 	$('ul.listing.toggle').each(function () {
-		$(this).hide().parent().prepend($('<a href="." class="listing-button" title="Details">Details</a>').click(function () {
+		$(this).hide().parent().prepend($('<a class="listing-button" title="Details">Details</a>').click(function () {
 			var $this = $(this);
 			
 			if ($this.hasClass('opened')) {
@@ -343,7 +343,7 @@ function prepareTabs() {
 	var $tabcontent = $('<div class="tabcontent" />');
 	$tabcontent.append($tabs.children('.listing').addClass('tab-content'));
 
-	$tabbar.children('.tab').wrapInner($('<a href=".">').click(function () {
+	$tabbar.children('.tab').wrapInner($('<a>').click(function () {
 		var $parent = $(this).parent();
 		var tab = $parent.attr('data-tab');
 

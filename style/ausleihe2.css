@@ -22,6 +22,7 @@ h1 {
 
 a {
 	color: #18afa5;
+	cursor: pointer;
 }
 
 .hidden {
@@ -204,7 +205,7 @@ ul.listing ul.listing {
 /*
  * Kalender
  */
-div.calendar_top {
+div.calendar-top {
 	margin-top: 2em;
 	padding: 0.7em 0.5em 0;
 	background-color: #FFF;
@@ -218,12 +219,12 @@ div.calendar_top {
 	border-top-right-radius: 1em;
 }
 
-div.calendar_top .prev, div.calendar_top .next {
+div.calendar-top .prev, div.calendar-top .next {
 	float: left;
 	width: 30%;
 }
 
-div.calendar_top a {
+div.calendar-top a {
 	display: block;
 	height: 34px;
 	width: 34px;
@@ -231,24 +232,24 @@ div.calendar_top a {
 	background-image: url(images/icons-34.png);
 }
 
-div.calendar_top .prev a {
+div.calendar-top .prev a {
 	background-position: 0 0;
 }
 
-div.calendar_top .prev a:hover {
+div.calendar-top .prev a:hover {
 	background-position: 0 -34px;
 }
 
-div.calendar_top .next a {
+div.calendar-top .next a {
 	background-position: -34px 0;
 	float: right;
 }
 
-div.calendar_top .next a:hover {
+div.calendar-top .next a:hover {
 	background-position: -34px -34px;
 }
 
-div.calendar_top .month {
+div.calendar-top .month {
 	float: left;
 	width: 40%;
 	margin-bottom: 0;
@@ -446,7 +447,7 @@ div.errors p, div.message p {
 	padding: 1em 1.5em 1.5em;
 }
 
-#no-js {
+#no-js, #no-ie6 {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -455,6 +456,10 @@ div.errors p, div.message p {
 	padding: 0.5em;
 	border-top: 1px #BCBDA3 solid;
 	z-index: 1;
+}
+
+#no-ie6 {
+	z-index: 2;
 }
 
 /*
