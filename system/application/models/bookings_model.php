@@ -14,7 +14,7 @@ class Bookings_model extends MY_Model
 		BOOKING_CLOSED => 'abgeschlossen',
 		BOOKING_DENIED => 'abgelehnt');
 
-	function listing($is_room = false, $updates = false, $own_listing = false)
+	function listing($is_room = false, $updates = false, $own_listing = false, $check_inventory = false)
 	{
 		$where_sql = array();
 		if (isset($is_room))
@@ -82,6 +82,49 @@ class Bookings_model extends MY_Model
 			foreach ($this->getUpdates(array_keys($bookings)) as $id => $updates)
 			{
 				$bookings[$id]->updates = $updates;
+			}
+		}
+		
+		if ($check_inventory)
+		{
+			foreach ($bookings as $booking)
+			{
+				$booking->booked = false;
+				if ($booking->status != BOOKING_NEW)
+				{
+					continue;
+				}
+				
+				foreach ($bookings as $booking2)
+				{
+					if (!in_array($booking2->status, array(BOOKING_CONFIRMED, BOOKING_BORROWED)))
+					{
+						continue;
+					}
+					
+					if (($booking->start >= $booking2->start && $booking->start < $booking2->end)
+						|| ($booking->end > $booking2->start && $booking->end <= $booking2->end)
+						|| ($booking->start < $booking2->start && $booking->end > $booking2->end))
+					{
+						foreach (array_keys($booking->inventory) as $inv_id)
+						{
+							if (isset($booking2->inventory[$inv_id]))
+							{
+								$booking->booked = true;
+								
+								if (!isset($booking->inventory[$inv_id]->booked))
+								{
+									$booking->inventory[$inv_id]->booked = array();
+								}
+								
+								$booking->inventory[$inv_id]->booked[] = $booking2;
+								break;
+							}
+						}
+					}
+					unset($booking2);
+				}
+				unset($booking);
 			}
 		}
 

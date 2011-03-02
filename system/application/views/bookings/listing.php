@@ -30,6 +30,7 @@
 		</thead>
 		<tbody>
 			<?php foreach ($category->bookings as $booking): ?>
+			<?php $booked_class = ($status == BOOKING_NEW) ? ' ' . (($booking->booked) ? 'error' : 'ok') : '' ?>
 			<tr class="noline booking-record-<?php echo $booking->id ?>">
 				<td class="line-l">
 					<span class="booking-title" data-id="<?php echo $booking->id ?>" data-tab="<?php echo $status ?>">
@@ -43,7 +44,7 @@
 					<span class="marginalia"><?php echo $this->user_model->semester($booking->user->semester_id) ?></span>
 				</td>
 				<td><?php echo date('d.m.Y G:i', strtotime($booking->time)) ?></td>
-				<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-l line-r line-b">
+				<td rowspan="<?php echo (!empty($booking->updates)) ? 3 : 2 ?>" class="middle center line-l line-r line-b<?php echo $booked_class ?>">
 					<span><?php echo $booking->status_text ?></span>
 					<select name="action[<?php echo $booking->id ?>]" class="autosubmit listing-action">
 						<option value="">Aktion</option>
@@ -61,6 +62,22 @@
 						<li>
 							<?php echo $inventory->title ?><br />
 							<span class="marginalia"><?php echo $inventory->desc ?></span>
+							<?php if (isset($inventory->booked)): ?>
+							<ul class="marginalia" style="margin: 0.5em 0">
+								<?php foreach ($inventory->booked as $booked): ?>
+								<li>
+									bereits gebucht von
+									<a href="mailto:<?php echo $booked->user->email ?>?subject=Deine%20Ausleihe"><?php echo $booked->user->name ?></a>
+									<span class="marginalia"><?php echo $this->user_model->semester($booked->user->semester_id) ?></span>
+									vom <?php echo date('d.m.Y G:i', strtotime($booked->start)) ?>
+									bis <?php echo date('d.m.Y G:i', strtotime($booked->end)) ?>:
+									<span class="booking-title" data-id="<?php echo $booked->id ?>" data-tab="<?php echo $booked->status ?>">
+										<?php echo $booked->desc ?>
+									</span>
+								</li>
+								<?php endforeach ?>
+							</ul>
+							<?php endif ?>
 						</li>
 						<?php endforeach; ?>
 					</ul>

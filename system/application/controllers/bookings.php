@@ -48,7 +48,7 @@ class Bookings extends Controller
 			'' => '------',
 			BOOKING_DELETE => 'löschen');
 
-		$bookings = $this->bookings_model->listing(false, true);
+		$bookings = $this->bookings_model->listing(false, true, false, true);
 
 		if ($this->ajax)
 		{
@@ -88,7 +88,7 @@ class Bookings extends Controller
 			'' => '',
 			BOOKING_DELETE => 'löschen');
 
-		$bookings = $this->bookings_model->listing(true, true);
+		$bookings = $this->bookings_model->listing(true, true, false, true);
 
 		if ($this->ajax)
 		{

@@ -146,6 +146,14 @@ table.listing tr.highlight td, td.highlight, table.calendar td.highlight, li.hig
 	background-color: #FEDF98 !important;
 }
 
+table.listing tr.error td, td.error {
+	background-color: #F6E4E4 !important;
+}
+
+table.listing tr.ok td, td.ok {
+	background-color: #E2F4DB !important;
+}
+
 ul.listing {
 	border: #D0D0D0 solid;
 	border-width: 1px 1px 0;
