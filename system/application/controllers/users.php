@@ -44,6 +44,12 @@ class Users extends Controller
 		$user_id = $this->uri->segment(3);
 
 		$new_role = $this->user_model->toggle_role($user_id);
+		
+		if ($new_role == USER_ROLE_ADMIN)
+		{
+			$this->load->library('notifications');
+			$this->notifications->newAdministrator();
+		}
 
 		if ($this->ajax)
 		{
@@ -57,12 +63,25 @@ class Users extends Controller
 
 	function status()
 	{
-		if (!$this->user_model->check($this->uri->segment(3)))
+		$user_id = (int) $this->uri->segment(3);
+		if (!$this->user_model->check($user_id))
 		{
 			return;
 		}
 		
-		$new_status = $this->user_model->toggle_status($this->uri->segment(3));
+		$new_status = $this->user_model->toggle_status($user_id);
+		
+		$email = $this->user_model->get_email($user_id);
+		
+		$this->load->library('notifications');
+		if ($new_status == USER_ACTIVE)
+		{
+			$this->notifications->userEnabled($email);
+		}
+		else
+		{
+			$this->notifications->userDisabled($email);
+		}
 
 		if ($this->ajax)
 		{

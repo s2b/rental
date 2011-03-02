@@ -134,6 +134,16 @@ class Booking extends Controller
 		
 		$this->bookings_model->add($info, $inventory, $is_room);
 		
+		$this->load->library('notifications');
+		if ($is_room)
+		{
+			$this->notifications->studioBooking($this->session->userdata('user_email'));
+		}
+		else
+		{
+			$this->notifications->inventoryBooking($this->session->userdata('user_email'));
+		}
+		
 		return true;
 	}
 	

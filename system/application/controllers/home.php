@@ -104,9 +104,8 @@ class Home extends Controller
 			
 			$link = base_url() . 'home/resetpassword?email=' . $email . '&token=' . $token;
 			
-			/**
-			 * @ToDo E-Mail schicken
-			 */
+			$this->load->library('notifications');
+			$this->notifications->userForgotPassword($email, $link);
 			
 			$this->load->view('header');
 			$this->load->view('home/lostpassword_success');				
@@ -203,6 +202,9 @@ class Home extends Controller
 			// Benutzer hinzufügen
 			$this->load->model('user_model');
 			$this->user_model->add($info);
+			
+			$this->load->library('notifications');
+			$this->notifications->userRegistration($info['user_email']);
 		
 			// Nachricht anzeigen
 			$this->load->view('home/register_success');

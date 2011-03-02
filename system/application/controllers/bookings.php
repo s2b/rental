@@ -254,12 +254,40 @@ class Bookings extends Controller
 	 */
 	function _status($booking_id, $booking_status)
 	{
+		$is_inventory = ($this->uri->segment(2) == 'inventory');
+		
 		if ($this->input->post('save'))
 		{
 			$booking_desc = $this->input->post('desc');
 
 			// Buchungsstatus in der Datenbank aktualisieren
 			$this->bookings_model->updateStatus($booking_id, $booking_status, $booking_desc);
+			
+			$email = $this->bookings_model->getNotificationEmail($booking_id);
+			
+			$this->load->library('notifications');
+			if ($is_inventory)
+			{
+				if ($booking_status == BOOKING_CONFIRMED)
+				{
+					$this->notifications->inventoryBookingAccepted($email);
+				}
+				else if ($booking_status == BOOKING_DENIED)
+				{
+					$this->notifications->inventoryBookingDenied($email);
+				}
+			}
+			else
+			{
+				if ($booking_status == BOOKING_CONFIRMED)
+				{
+					$this->notifications->studioBookingAccepted($email);
+				}
+				else if ($booking_status == BOOKING_DENIED)
+				{
+					$this->notifications->studioBookingDenied($email);
+				}
+			}
 
 			// Weiterleiten zur Auflistung
 			redirect('bookings/' . $this->uri->segment(2));
@@ -271,7 +299,7 @@ class Bookings extends Controller
 				'new_status' => $this->bookings_model->status_text[$booking_status],
 				
 				'hidden_fields' => form_hidden('action[' . $booking_id . ']', $booking_status),
-				'is_inventory' => ($this->uri->segment(2) == 'inventory'),
+				'is_inventory' => $is_inventory,
 				'form_url' => 'bookings/' . $this->uri->segment(2) . '/action'
 			);
 			

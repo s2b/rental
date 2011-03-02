@@ -125,6 +125,19 @@ class Bookings_model extends MY_Model
 
 		return $updates;
 	}
+	
+	function getNotificationEmail($id)
+	{
+		$this->db->select('users.user_email');
+		$this->db->join('users', 'users.user_id = bookings.user_id');
+		$this->db->where('booking_id', $id);
+		$query = $this->db->get($this->table);
+
+		$result = $query->result();
+		$query->free_result();
+
+		return (!empty($result)) ? $result[0]->user_email : null;
+	}
 
 	function check($id)
 	{

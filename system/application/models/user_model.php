@@ -96,6 +96,35 @@ class User_model extends MY_Model
 
 		return $user;
 	}
+	
+	function get_email($id)
+	{
+		$this->db->select('user_email');
+		$this->db->where('user_id', $id);
+		$query = $this->db->get($this->table);
+		
+		$result = $query->result();
+		$query->free_result();
+		
+		return (empty($result)) ? null : $result[0]->user_email;
+	}
+	
+	function get_admin_emails()
+	{
+		$this->db->select('user_id, user_email');
+		$this->db->where('user_status', USER_ACTIVE);
+		$this->db->where('user_role', USER_ROLE_ADMIN);
+		$query = $this->db->get($this->table);
+		
+		$emails = array();
+		foreach ($query->result() as $user)
+		{
+			$emails[$user->user_id] = $user->user_email;
+		}
+		$query->free_result();
+		
+		return $emails;
+	}
 
 	function semester($id = null)
 	{
