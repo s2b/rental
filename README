@@ -1,0 +1,32 @@
+This is an equipment rental tool for academic institutions. Please note that this project isn't under active development. Also note that all outputs are hard-coded in German.
+
+
+h2. Installation
+
+# create database and import rental.sql dump
+# place source files in htdocs
+# adjust configuration files in system/application/config:
+** config.php: $config['base_url']
+** database.php: $db['default']['hostname'], $db['default']['username'], $db['default']['password'], $db['default']['database']
+** notifications.php: $config['system_email']
+** email.php: See CodeIgniter documentation
+# open index.php in your browser
+# register new user
+# set user_role to 1 (= admin privileges) in the users table in your database
+
+
+h2. Features
+
+* user management
+* inventory management
+* inventory packages
+* inventory and room bookings
+* email notifications
+
+
+h2. Special tasks
+
+* Add semester:
+INSERT INTO semesters (semester_title) VALUES(ʼ10/11ʼ);
+* Add room:
+INSERT INTO inventory (inventory_room, inventory_status, inventory_time, user_id, inventory_title, inventory_desc) VALUES(1, 1, NOW(), <User-ID>, 'Room name', 'Room description');
