@@ -28,7 +28,7 @@ h2. Special tasks
 
 * Add semester:
 INSERT INTO semesters (semester_title)
-VALUES (ʼ10/11ʼ);
+VALUES(ʼ10/11ʼ);
 * Add room:
 INSERT INTO inventory (inventory_room, inventory_status, inventory_time, user_id, inventory_title, inventory_desc)
-VALUES (1, 1, NOW(), 1, 'Room name', 'Room description');
+VALUES(1, 1, NOW(), 1, 'Room name', 'Room description');
