@@ -2,4 +2,4 @@
 
 $config['notifications'] = true;
 
-$config['system_email'] = 'info@s2b-project.de';
+$config['system_email'] = 'rental@example.com';

@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://s2b.mine.nu/www/ausleihe2/";
+$config['base_url']	= "http://example.com/";
 
 /*
 |--------------------------------------------------------------------------
@@ -231,7 +231,7 @@ $config['encryption_key'] = "";
 | 'time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ausleihe';
+$config['sess_cookie_name']		= 'rental';
 $config['sess_expiration']		= 7200;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= TRUE;

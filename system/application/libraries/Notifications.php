@@ -53,8 +53,8 @@ class Notifications
 		{
 			$this->CI->email->cc($this->debugMail);
 		}
-		$this->CI->email->subject('FH Aachen Ausleihtool - ' . $this->subject);
-		$this->CI->email->message($this->message . "\n\n------\nFH Aachen Ausleihtool\n" . $this->systemURL);
+		$this->CI->email->subject('Rental tool - ' . $this->subject);
+		$this->CI->email->message($this->message . "\n\n------\nRental tool\n" . $this->systemURL);
 		
 		$this->CI->email->send();
 		$this->CI->email->clear();
